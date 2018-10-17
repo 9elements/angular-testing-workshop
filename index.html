@@ -1,0 +1,1476 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Testing Angular Apps</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/simple-molily.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <base target="_blank">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <style>
+    #nineelements-logo {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      width: 60px;
+      height: 60px;
+    }
+
+    .reveal .flow-blocks {
+      list-style-type: none;
+      margin: 0;
+      text-align: center;
+    }
+    .reveal .flow-blocks .flow-block {
+      position: relative;
+      background-color: #d0d0d0;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      padding: 10px 20px 8px;
+      font-size: 80%;
+      line-height: 1;
+    }
+    .flow-block::after {
+      content: '⬇';
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      z-index: 1;
+      transform: translateX(-50%);
+      font-size: 60%;
+      line-height: 1.1;
+      color: #c0c0c0;
+    }
+    .flow-block:last-child::after {
+      content: none;
+    }
+    .reveal .flow-blocks .side-effect {
+      background-color: #f0e0e0;
+    }
+
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+<!-- ******************************************************************** -->
+
+<section>
+<h1>Testing Angular Apps</h1>
+<p>Mathias Schäfer, 9elements</p>
+<p>2018-10-22</p>
+</section>
+
+<section>
+  <h2><a href="https://9elements.com">9elements</a></h2>
+
+  <ul>
+    <li>Agentur für Software & Design</li>
+    <li>Webseiten und mobile Apps</li>
+    <li>Kundenarbeiten & eigene Produkte</li>
+    <li>Sitz im Bochumer Bermudadreieck</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Mathias Schäfer</h2>
+
+  <ul>
+    <li>Webentwicklung seit 1999</li>
+    <li><a href="https://molily.de/artikel/">Technische Fachartikel</a></li>
+    <li>Germanistik und Philosophie, RUB</li>
+    <li>SELFHTML-Redaktion, 2005—2009</li>
+    <li>Angestellt bei 9elements, seit 2007</li>
+    <li><a href="https://github.com/chaplinjs/chaplin">Chaplin.js</a>, 2012</li>
+    <li><a href="https://molily.de/robust-javascript/">Robust Client-Side JavaScript</a>, 2017</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Arbeitsgebiete</h2>
+
+  <ul>
+    <li>Architektur von JavaScript-Webanwendungen</li>
+    <li>Setup &amp; Implementierung</li>
+    <li>Optimierung &amp; Performance</li>
+    <li>Interne und externe Schulungen</li>
+    <li>Consulting</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Vorstellung und aktueller Stand</h2>
+
+  <ul>
+    <li>Testing-Praxis</li>
+    <li>Einstellung zu Testing</li>
+    <li>Eigene Einschätzung</li>
+    <li>Woran hapert es?</li>
+    <li>Ziele</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Software-Tests</h2>
+
+  <ul>
+    <li>Verifizierung der Funktionalität gemäß Spezifikation</li>
+    <li>Die Software ermöglicht dem User, gewisse Aufgaben zu erfüllen</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Software-Tests</h2>
+
+  <ul>
+    <li>Agile Entwicklung ermöglichen</li>
+    <li>Move fast, fix things</li>
+    <li>Refactoring ermöglichen, Regressions vermeiden</li>
+    <li>Testing verbessert die Architektur</li>
+    <li>Code ist einfach, lesbar und wartbar</li>
+  </ul>
+</section>
+
+<section>
+<h2>Arten von Software-Tests</h2>
+
+<ul>
+  <li>Manuelle Tests</li>
+  <li>Automatisierte Tests</li>
+</ul>
+</section>
+
+<section>
+<h2>Ebenen</h2>
+
+<ul>
+  <li>Unit Tests</li>
+  <li>Integration Tests</li>
+  <li>Functional-Tests (End-to-End-Tests)</li>
+</ul>
+</section>
+
+<section>
+  <h2>Testing in Angular: Thesen</h2>
+
+  <ul>
+    <li>Testbarkeit ist eines der Grundprinzipien</li>
+    <li>Alle Teile sind (relativ) gut testbar</li>
+    <li>Ein Großteil der Komplexität ist auf die Testbarkeit zurückzuführen</li>
+    <li>Angular erschließt sich nicht ohne Testing</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Testing in Angular: Praxistipps</h2>
+
+  <ul>
+    <li>Angular bringt Tools zum Testen aller Teile mit sich</li>
+    <li><strong>Wie</strong> ihr diese verwendet, ist euch überlassen</li>
+    <li>Projekt-Konventionen nötig</li>
+    <li>Helferlein nötig, um lesbare Tests zu schreiben</li>
+    <li>Testing muss einfach sein und Spaß machen</li>
+  </ul>
+</section>
+
+<section>
+<h2>Unit Test in Angular (1)</h2>
+
+<ul>
+  <li>Testet die kleinste mögliche Code-Einheit</li>
+  <li>Testet eine Funktion oder Klasse</li>
+  <li>Testet einen Teil der App (Modul, Komponente, Service, Direktive…)</li>
+</ul>
+</section>
+
+<section>
+  <h2>Unit Test in Angular (2)</h2>
+
+  <ul>
+    <li>Black-Box-Testing</li>
+    <li>Testet das öffentliche Interface oder die Ausgabe</li>
+    <li>Interna werden nicht angefasst, selbst wenn sie technisch erreichbar sind</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Unit Test in Angular (3)</h2>
+
+  <ul>
+    <li>Testet die Einheit möglichst <em>isoliert</em></li>
+    <li>Abhängigkeiten werden durch Mock-Objekte ersetzt</li>
+    <li>Verifizieren des Aufrufs der Abhängigkeiten</li>
+    <li>Keine Nebenwirkungen (Side Effects, z.B. I/O, HTTP)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Unit Test in Angular (3)</h2>
+
+  <ul>
+    <li>Vorteil: Effektiv und gezielt</li>
+    <li>Vorteil: Einfach, nah am Code</li>
+    <li>Nachteil: Sehr technisch, wenig aus User-Sicht</li>
+    <li>Nachteil: Herauslösen aus dem Kontext</li>
+    <li>Nachteil: Mocking-Aufwand</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Unit Test in Angular (4)</h2>
+
+  <ul>
+    <li>Testet einen Teil der App (Modul, Komponente, Service, Direktive…)</li>
+    <li><code>*.spec.ts</code></li>
+    <li>Karma Test Runner</li>
+    <li>Jasmine für Test Suites und Assertions</li>
+    <li><code>TestBed</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Integration Tests</h2>
+  <ul>
+    <li>Testet mehrere zusammenhängende Einheiten</li>
+    <li>Testet eine Einheit mitsamt Abhängigkeiten / Kindern</li>
+    <li>Meist eine komplexe Einheit auf hoher Ebene</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Integration Test in Angular</h2>
+
+  <ul>
+    <li>Testet einen Teil der App auf hoher Ebene</li>
+    <li>z.B. Modul, Komponente mit Kindern, Service mit anderen Services…</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Integration Test in Angular</h2>
+
+  <ul>
+    <li>Zusammenhängendes wird nicht künstlich getrennt</li>
+    <li>Komplexer, immer noch nah am Code</li>
+    <li>Mehr aus User-Sicht</li>
+    <li>Nebenwirkungen schwer zu vermeiden</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Functional Tests</h2>
+
+  <ul>
+    <li>Testet die gesamte App aus User-Sicht</li>
+    <li>Automatisiert</li>
+    <li>Implementierungsdetails sind irrelevant</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Functional Test in Angular (1)</h2>
+
+  <ul>
+    <li>Startet einen Browser, navigiert zur App</li>
+    <li>Simuliert Eingaben, z.B. Klicks auf Links</li>
+    <li>Operiert nicht auf Code-Ebene</li>
+    <li>Schaut nur die HTML-Ausgabe an</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Functional Test in Angular (2)</h2>
+
+  <ul>
+    <li>End-to-end:<br>User ↔ Frontend ↔ Backend ↔ DB</li>
+    <li>WebDriver, Selenium</li>
+    <li>Protractor, Jasmine</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Unit Test ausführlich</h2>
+
+  <ul>
+    <li>Wir erstellen einen Counter</li>
+    <li><code>npm install -g @angular/cli</code></li>
+    <li><code>ng new counter</code></li>
+    <li><code>"strict": true</code> in tsconfig.json aktivieren</li>
+    <li><code>ng generate component counter</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Counter-Funktionalität</h2>
+
+  <ul>
+    <li>Komponente hat einen aktuellen Count-Wert</li>
+    <li>Anzeige des Count-Werts</li>
+    <li>Button zum Erhöhen des Count-Wertes</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Aufbau eines Unit Test</h2>
+
+  <ul>
+    <li>Jasmine <code>describe()</code>, <code>beforeEach()</code>, <code>it()</code></li>
+    <li><code>TestBed</code> konfigurieren</li>
+    <li><code>configureTestingModule</code>, <code>createComponent</code></li>
+    <li><code>fixture.detectChanges()</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Funktionalität einer Komponente testen</h2>
+
+  <ul>
+    <li>Wie testen wir die Funktionalität?</li>
+    <li>HTML-DOM ansehen!</li>
+    <li>Komponente rendern</li>
+    <li>Elemente heraussuchen</li>
+    <li>Inhalte prüfen</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Komponente in einem Unit Test</h2>
+
+  <ul>
+    <li>ComponentFixture, Komponenteninstanz, DebugElement</li>
+    <li><code>fixture</code></li>
+    <li><code>fixture.componentInstance</code></li>
+    <li><code>fixture.nativeElement</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Elemente heraussuchen</h2>
+
+  <ul>
+    <li><code>fixture.debugElement.query(By.css('…'))</code></li>
+    <li><code>fixture.debugElement.queryAll(By.css('…'))</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Wie Elemente markieren und finden?</h2>
+
+  <ul>
+    <li><del>IDs</del></li>
+    <li>Klassen: <code>class="qa-count"</code></li>
+    <li>data-Attribute: <code>data-qa="count"</code></li>
+    <li>Empfehlung: <code>data-qa</code></li>
+    <li><code>query(By.css('[data-qa="count"]'))</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Textinhalte überprüfen (1)</h2>
+
+  <ul>
+    <li><code>query()</code> liefert ein <code>DebugElement</code></li>
+    <li>Wrapper um das echte DOM-Element</li>
+    <li><code>debugElement.nativeElement</code> liefert den DOM-Knoten</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Textinhalte überprüfen (2)</h2>
+
+  <ul>
+    <li><code>const text =<br>debugElement.nativeElement.textContent;</code></li>
+    <li><code>expect(text).toBe('…');</code></li>
+    <li><code>expect(text).toContain('…');</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Counter-Test</h2>
+
+  <ul>
+    <li>✅ it('renders the initial count', …)</li>
+    <li>❌ it('increments', …)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Ereignisse simulieren</h2>
+
+  <ul>
+    <li>Element heraussuchen</li>
+    <li><code>triggerEventHandler</code> aufrufen</li>
+  </ul>
+<pre><code class="javascript" data-trim>
+debugElement.triggerEventHandler(
+  type: string, event: Event
+)
+</code></pre>
+</section>
+
+<section>
+  <h2>Event-Objekt</h2>
+
+  <pre><code class="javascript" data-trim>
+  debugElement.triggerEventHandler('click', null)
+  debugElement.triggerEventHandler('click', {})
+  debugElement.triggerEventHandler('click', {
+    preventDefault() {},
+    stopPropagation() {},
+    target: debugElement.nativeElement,
+    currentTarget: debugElement.nativeElement,
+    pageX: 100,
+    pageY: 200
+  })
+</code></pre>
+</section>
+
+<section>
+  <h2>Interaktivität testen</h2>
+
+  <ol>
+    <li>Interaktives Element heraussuchen (Button)</li>
+    <li>Ereignis simulieren</li>
+    <li>Manuell neu rendern: <code>fixture.detectChanges()</code></li>
+    <li>Ausgabe prüfen</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Counter-Test</h2>
+
+  <ul>
+    <li>✅ it('renders the initial count', …)</li>
+    <li>✅ it('increments', …)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Counter-Funktionalität erweitern</h2>
+
+  <ul>
+    <li>Decrement wie Increment</li>
+    <li>Reset: Eingabefeld und Reset-Button</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Counter-Reset testen</h2>
+
+  <ol>
+    <li>Eingabefeld heraussuchen und <code>value</code> setzen</li>
+    <li>Klick auf Reset-Button simulieren</li>
+    <li><code>detectChanges()</code></li>
+    <li>Ausgabe prüfen</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Helferlein zum Testen von Komponenten</h2>
+
+  <ul>
+    <li><code>findEl(fixture, qaAttribute): DebugElement</code></li>
+    <li><code>findEls(fixture, qaAttribute): DebugElement[]</code></li>
+    <li><code>getText(fixture, qaAttribute): string</code></li>
+    <li><code>expectText(fixture, qaAttribute, text)</code></li>
+    <li><code>click(fixture, qaAttribute)</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Input und Outputs</h2>
+
+  <ul>
+    <li>Counter bekommt einen Input: <code>startCount</code></li>
+    <li>Counter bekommt einen Output: <code>countChange</code></li>
+  </ul>
+
+<pre><code data-trim>
+&lt;app-counter
+  [startCount]="5"
+  (countChange)="logCount($event)"
+>&lt;/app-counter>
+</code></pre>
+</section>
+
+<section>
+  <h2>Inputs im Test setzen</h2>
+
+  <p>Inputs sind Eigenschaften der Komponenteninstanz</p>
+
+<pre><code data-trim>
+component.startCount = startCount;
+component.ngOnChanges();
+fixture.detectChanges();
+</code></pre>
+</section>
+
+<section>
+  <h2>Output testen (1)</h2>
+
+  <ul>
+    <li>Outputs sind EventEmitter</li>
+    <li><code>component.countChange.subscribe()</code></li>
+    <li>Asynchroner Test mit <code>done()</code> oder <code>async()</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Output testen (2)</h2>
+
+<pre><code data-trim>
+component.countChange.subscribe((value: number) => {
+  expect(value).toBe(1);
+  done();
+});
+
+click(fixture, 'incrementButton');
+</code></pre>
+</section>
+
+<section>
+  <h2>Einfache Komponenten: ✅ getestet</h2>
+
+  <ul>
+    <li>Ausgabe testen</li>
+    <li>User-Eingaben simulieren</li>
+    <li>Inputs &amp; Outputs</li>
+    <li>Verwendet Helferlein!</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Komponente als Black Box testen</h2>
+
+  <ul>
+    <li>Nur ins DOM schauen und Ereignisse auslösen</li>
+    <li>Nur über Inputs und Outputs mit der Komponente sprechen</li>
+    <li><em>Keine</em> Methoden aufrufen</li>
+    <li><em>Nicht</em> auf Eigenschaften zugreifen (auch wenn sie öffentlich sind)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Komplexe Komponenten</h2>
+
+  <ul>
+    <li>Eigenständig vs. verbunden</li>
+    <li>»Smart« vs. »dumb«</li>
+    <li>
+      Abhängigkeiten:
+      <ul>
+        <li>Verschachtelte Komponenten</li>
+        <li>Services</li>
+        <li>NgRx Store</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Verschachtelte Komponenten testen</h2>
+
+  <ul>
+    <li>Unit Test – Shallow Rendering –<br>Kinder nicht rendern</li>
+    <li>Integration Test – Deep Rendering –<br>Kinder mitrendern</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Deep Rendering</h2>
+
+  <ul>
+
+    <li>Beispiel: app.component.html referenziert <code>&lt;app-counter></code></li>
+    <li>Standardmäßig werden die Kinder mitgerendert</li>
+    <li>Alle Komponenten müssen im Testmodul deklariert werden</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Shallow Rendering (1)</h2>
+  <ul>
+    <li>Kinder nicht mitrendern:<br><code>schemas: [ NO_ERRORS_SCHEMA ]</code></li>
+    <li>Wrapper-Elemente bleiben leer, Kindkomponenten werden nicht instantiiert</li>
+    <li><code>&lt;app-counter …>&lt;/app-counter></code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Shallow Rendering (2):<br>Was testen?</h2>
+
+  <ol>
+    <li>Kindkomponente wird gerendert<br>(Wrapper <code>app-counter</code> ist vorhanden)</li>
+    <li>Input-Daten werden korrekt übergeben</li>
+    <li>Auf Events (Outputs) wird korrekt reagiert</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Shallow Rendering (3):<br>Kindkomponente vorhanden?</h2>
+
+<pre><code data-trim>
+const el =
+  fixture.debugElement.query(By.css('app-counter'));
+expect(el).toBeTruthy();
+</code></pre>
+</section>
+
+<section>
+  <h2>Shallow Rendering (4):<br>Kindkomponente vorhanden?</h2>
+
+<pre><code data-trim>
+// Helferlein: Wirft einen Fehler, wenn nichts gefunden
+const el = findComponent(fixture, 'app-counter');
+expect(el).toBeTruthy();
+// Oder
+expect().nothing();
+</code></pre>
+</section>
+
+<section>
+  <h2>Shallow Rendering (5):<br>Input testen</h2>
+
+  <p>DebugElement hat eine Eigenschaft <code>properties</code></p>
+
+<pre><code data-trim>
+&lt;app-counter [startCount]="5">&lt;/app-counter>
+</code></pre>
+
+<pre><code data-trim>
+const el = findComponent(fixture, 'app-counter');
+expect(el.properties.startCount).toBe(5);
+</code></pre>
+
+</section>
+
+<section>
+  <h2>Shallow Rendering (6):<br>Output testen</h2>
+
+  <ul>
+    <li>Outputs sind aus Sicht der Elternkomponente Ereignisse</li>
+    <li>Simulieren mit dem bekannten <code>triggerEventHandler</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Shallow Rendering (7):<br>Output testen</h2>
+
+  <ul>
+    <li><code>(countChange)="handleCountChange($event)"</code></li>
+    <li><code>triggerEventHandler('countChange', 5)</code></li>
+    <li>Auswirkung prüfen (z.B. mit Jasmine Spies)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Komponente mit Service-Abhängigkeit</h2>
+
+
+<pre class="typescript"><code data-trim>
+class ServiceCounterComponent {
+  constructor(private counterService: CounterService) {
+    this.count$ = this.counterService.getCount();
+  }
+}
+</code></pre>
+
+  <ul>
+    <li>Constructor Injection</li>
+    <li>Unit Test – Service wird gemockt</li>
+    <li>Integration Test – Service wird mitgetestet</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Terminologie</h2>
+
+  <dl>
+    <dt>Stubs</dt>
+    <dd>Ersatz für eine Abhängigkeit</dd>
+    <dd>Vordefinierte Eigenschaften &amp; Rückgabewerte</dd>
+    <dd>Zustand verifizieren</dd>
+    <dt>Mocks</dt>
+    <dd>Wie Stubs</dd>
+    <dd>Erwartungen gegen den Mock ausführen</dd>
+    <dd>Zustand &amp; Verhalten verifizieren</dd>
+  </dl>
+
+  <p><small><a href="https://angular-buch.com/">Quelle: Angular-Buch, dpunkt.verlag 2017, S. 383</a></small></p>
+</section>
+
+<section id="service-mock">
+  <h2>Service-Abhängigkeit mocken</h2>
+
+  <ul>
+    <li><a href="https://codecraft.tv/courses/angular/unit-testing/mocks-and-spies/">Verschiedene Mocking-Strategien</a> 🤷‍♀️</li>
+    <li>Testing with the real service</li>
+    <li>Mocking with fake classes</li>
+    <li>Mocking by overriding functions</li>
+    <li>Mock by using a real instance with Spy</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Anforderungen an Mocks</h2>
+
+  <ul>
+    <li>Original darf nie aufgerufen werden (Nebenwirkungen!)</li>
+    <li>⇒ Es darf nicht möglich sein, das Überschreiben einer Methode zu vergessen</li>
+    <li>Mock und Original müssen auf dem gleichen Stand sein</li>
+    <li>⇒ Mock muss eine Typableitung des Originals sein</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Anforderungen erfüllt?</h2>
+
+  <ul style="list-style-type: none">
+    <li>⛈ Testing with the real service</li>
+    <li>⛅️ Mocking with fake classes</li>
+    <li>🌧 Mocking by overriding functions</li>
+    <li>🌧 Mock by using a real instance with Spy</li>
+  </ul>
+
+  <p style="font-size: 200%">🙍‍♀️🤦‍♀️</p>
+</section>
+
+<section>
+  <h2>Service-Abhängigkeit mocken</h2>
+
+  <ul style="list-style-type: none">
+    <li>👩‍💻 Basis: Mocking with fake classes</li>
+    <li>👩‍🔬 Entweder eine Klasse oder Instanz</li>
+    <li>👩‍🔧 Typableitung hinzufügen</li>
+    <li>💆‍♀️ 🌈 ☀️</li>
+  </ul>
+</section>
+
+<section>
+  <h2>☀️ Mock-Service als Klasse</h2>
+
+<pre class="typescript"><code data-trim>
+class MockCounterService implements Partial&lt;CounterService> {
+  getCount() {
+    return of(count);
+  }
+  increment() {}
+  decrement() {}
+  reset() {}
+};
+</code></pre>
+</section>
+
+<section>
+  <h2>☀️ Mock-Service als Objekt</h2>
+
+<pre class="typescript"><code data-trim>
+const mockCounterService: Partial&lt;CounterService> = {
+  getCount() {
+    return of(count);
+  },
+  increment() {},
+  decrement() {},
+  reset() {}
+};
+</code></pre>
+</section>
+
+<section>
+  <h2>Mock anstelle des Originals verwenden</h2>
+
+  <p>Im Testing Module:</p>
+
+<pre class="typescript"><code data-trim>
+providers: [
+  { provide: CounterService, useClass: MockCounterService }
+]
+</code></pre>
+
+<pre class="typescript"><code data-trim>
+providers: [
+  { provide: CounterService, useValue: mockCounterService }
+]
+</code></pre>
+</section>
+
+<section>
+  <h2>Interaktion mit dem Mock testen</h2>
+
+  <ul>
+    <li>Mock liefert feste Rückgabewerte</li>
+    <li>Mock erwartet gewisse Parameter</li>
+    <li>Parameter-Übergabe testen mit Jasmine Spies</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Jasmine Spy</h2>
+
+  <ul>
+    <li>Funktion, die alle Aufrufe aufzeichnet</li>
+    <li>Später ist Prüfung möglich</li>
+    <li>Wurde der Spy aufgerufen? Wie oft?</li>
+    <li>Wurde der Spy mit gewissen Parametern aufgerufen?</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Unabhängigen Spy erzeugen</h2>
+
+<pre><code data-trim>
+const spy = jasmine.createSpy('name');
+const spy = jasmine.createSpy('name')
+  .and.callFake((…) => {…});
+</code></pre>
+</section>
+
+<section>
+  <h2>Spy wrappt eine vorhandene Methode</h2>
+
+<pre><code data-trim>
+spyOn(object, 'method');
+spyOn(object, 'method').and.callThrough();
+spyOn(object, 'method').and.returnValue(value);
+</code></pre>
+</section>
+
+<section>
+  <h2>Spies verifizieren</h2>
+
+<pre><code data-trim>
+expect(spy).toHaveBeenCalled();
+expect(spy).not.toHaveBeenCalled();
+expect(spy).toHaveBeenCalledTimes(5);
+expect(spy).toHaveBeenCalledWith(param1, …);
+expect(object.method).toHaveBeenCalled();
+expect(object.method).toHaveBeenCalledWith(param1, …);
+</code></pre>
+</section>
+
+<section>
+  <h2>Spies am Mock-Service installieren</h2>
+
+<pre><code data-trim>
+spyOn(mockCounterService, 'getCount').and.callThrough();
+spyOn(mockCounterService, 'increment');
+spyOn(mockCounterService, 'decrement');
+spyOn(mockCounterService, 'reset');
+</code></pre>
+</section>
+
+<section>
+  <h2>Spies verifizieren</h2>
+
+<pre><code data-trim>
+expect(mockCounterService.getCount).toHaveBeenCalled();
+expect(mockCounterService.increment).toHaveBeenCalled();
+expect(mockCounterService.decrement).toHaveBeenCalled();
+expect(mockCounterService.reset).toHaveBeenCalledWith(newCount);
+</code></pre>
+</section>
+
+<section>
+  <h2>Fazit Service-Mocking</h2>
+
+  <ul>
+    <li>Mocking ist aufwändig und erfordert Übung</li>
+    <li>Services lassen sich gut mocken …</li>
+    <li>… wenn das Interface übersichtlich und die Funktionalität klar sind</li>
+    <li>Sinnvolle Testdaten (Stubs) sind nötig</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Komponente mit NgRx-Store-Abhängigkeit</h2>
+
+<pre class="typescript"><code data-trim>
+class NgRxCounterComponent {
+  constructor(private store: Store&lt;AppState>) {
+    this.count$ = store.pipe(select('counter'));
+  }
+}
+</code></pre>
+</section>
+
+<section>
+  <h2>Store mocken (1)</h2>
+
+  <ul>
+    <li><a href="https://github.com/ngrx/platform/blob/master/docs/store/testing.md">Offizielle Methode</a></li>
+    <li><code>StoreModule.forRoot(reducers, initialState)</code></li>
+    <li>Viel zu komplex!</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Store mocken (2)</h2>
+
+  <ul>
+    <li>Reducer sind irrelevant für den Komponententest</li>
+    <li>Ein Reducer für jede Eigenschaft von AppState ist nötig</li>
+    <li>Die Original-Reducer liefern nur den initialState</li>
+    <li>Selbst leere Reducer sind aufwändig aufzusetzen</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Store mocken (3)</h2>
+
+  <ul>
+    <li>In 99% der Fälle reicht es, einen Store mit vordefiniertem State bereitzustellen</li>
+    <li>👩‍🔬 Eigenen Mock-Store bauen</li>
+    <li>Der NgRx Store kocht auch nur mit RxJS</li>
+    <li>Verhält sich wie ein <code>BehaviorSubject</code></li>
+  </ul>
+</section>
+
+<section id="provide-mock-store">
+  <h2>Eigener Mock-Store</h2>
+
+  <ul>
+    <li>Helferlein: <code>MockStore</code>, <code>makeMockStore(mockState)</code>, <code>provideMockStore(mockState)</code></li>
+    <li><code>mockState</code> ist vom Typ <code>Partial&lt;AppState></code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Store-Abhängigkeit: Was testen?</h2>
+
+  <ul>
+    <li>Komponente zieht sich Daten aus dem Store</li>
+    <li>Komponente transformiert ggf. diese Daten</li>
+    <li>Komponente rendert diese Daten</li>
+    <li>Komponente dispatcht Actions</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Dispatch von Actions testen</h2>
+
+  <p><code>MockStore#dispatch</code> ist ein Jasmine Spy</p>
+
+<pre class="typescript"><code data-trim>
+it('resets the count', () => {
+  const value = 15;
+  findEl(fixture, 'reset-input').nativeElement.value = value;
+  click(fixture, 'reset-button');
+  expect(store.dispatch).toHaveBeenCalledWith(new Reset(value));
+});
+</code></pre>
+</section>
+
+<section>
+  <h2>Verschiedene States testen</h2>
+
+  <ul>
+    <li>Wenn der State komplex sein kann, müssen alle Fälle getestet werden</li>
+    <li>Pro Spec ein anderer State</li>
+    <li>Flexible <code>setup</code>-Funktion statt fester <code>beforeEach</code>-Logik</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Setup-Funktion</h2>
+
+<pre class="typescript"><code data-trim>
+function setup(mockState: Partial&lt;AppState>) {
+  TestBed.configureTestingModule({
+    declarations: [ NgRxCounterComponent ],
+    providers: [ provideMockStore(mockState) ]
+  }).compileComponents();
+
+  const store: Store = TestBed.get(Store);
+
+  const fixture = TestBed.createComponent(NgRxCounterComponent);
+  fixture.detectChanges();
+
+  return { fixture, store };
+}
+</code></pre>
+</section>
+
+<section>
+  <h2>Verschiedene States testen</h2>
+
+<pre class="typescript"><code data-trim>
+it('renders the data from the store', () => {
+  const mockState: Partial&lt;AppState> = { counter: 1 };
+  const { fixture, store } = setup(mockState);
+  expectText(fixture, 'count', String(mockState.counter));
+})
+</code></pre>
+
+<p>Baut euch Helferlein, um komplexeren Mock-State zu generieren!</p>
+</section>
+
+<section>
+  <h2>Zusammenfassung Komponenten-Tests</h2>
+
+  <ol>
+    <li>Eigenständige Komponenten:<br>Ausgabe, Interaktivität, Inputs, Outputs</li>
+    <li>Komponenten mit Service-Abhängigkeit:<br>DI, Mocking, Spies, Mock-Daten</li>
+    <li>Komponenten mit Store-Abhängigkeit:<br>DI, Mock Store, Mock State, Action-Dispatching</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Weitere Teile der Anwendung</h2>
+
+  <ul>
+    <li>Services</li>
+    <li>Effects</li>
+    <li>Reducer</li>
+    <li>(Pipes, Directives, Resolver…)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Services – Was testen?</h2>
+
+  <ul>
+    <li>Methoden liefern Werte zurück</li>
+    <li>
+      Methodenaufrufe ändern privaten State<br>
+      &rarr; Indirekt testen
+    </li>
+    <li>Interaktion mit Abhängigkeiten (z.B. <code>HttpClient</code>)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Services testen: <code>CounterService</code></h2>
+
+  <ul>
+    <li>Standard-<code>TestBed</code></li>
+    <li>
+      Eine Spec für jede öffentliche Methode:<br>
+      <code>increment</code>, <code>decrement</code>, <code>reset</code>
+    </li>
+    <li>Auswirkung testen durch <code>getCount</code>-Aufruf</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Services mit Abhängigkeit testen:<br><code>CounterApiService</code></h2>
+
+  <ul>
+    <li>Unit Test – in Isolation testen</li>
+    <li>Abhängigkeit auf <a href="https://angular.io/guide/http">HttpClient</a></li>
+    <li>Einfach testbar mit dem <code>HttpClientTestingModule</code></li>
+  </ul>
+
+<pre class="typescript"><code data-trim>
+TestBed.configureTestingModule({
+  imports: [ HttpClientTestingModule ],
+  providers: [ CounterApiService]
+});
+</code></pre>
+</section>
+
+<section>
+  <h2>HttpClientTestingModule (1)</h2>
+
+  <p>HTTP-Requests finden</p>
+
+<pre class="typescript"><code data-trim>
+const httpMock: HttpTestingController =
+  TestBed.get(HttpTestingController);
+
+const request = httpMock.expectOne({
+  method: 'GET', url: expectedURL
+});
+
+const predicate = (candidate) =>
+  candidate.method === 'GET';
+const request = httpMock.expectOne(predicate);
+const requests = httpMock.match(predicate);
+</code></pre>
+</section>
+
+<section>
+  <h2>HttpClientTestingModule (2)</h2>
+
+  <p>Gefundene Requests beantworten</p>
+
+<pre class="typescript"><code data-trim>
+request.flush(serverResponse);
+</code></pre>
+
+  <p>Fehler simulieren</p>
+
+<pre class="typescript"><code data-trim>
+request.error(
+  new ErrorEvent('API error'),
+  { status: 404, statusText: 'Not Found' }
+);
+</code></pre>
+</section>
+
+<section>
+  <h2>HttpClientTestingModule (3)</h2>
+
+  <p>Verfizieren, dass alle Requests gefunden und beantwortet wurden</p>
+
+<pre class="typescript"><code data-trim>
+httpMock.verify();
+</code></pre>
+</section>
+
+<section>
+  <h2>Fazit: Services testen</h2>
+
+  <ul>
+    <li>Relativ einfach</li>
+    <li>Nichts fundamental neues</li>
+    <li>Gleicher Aufwand wie beim Service-Mocking für Komponenten-Tests</li>
+  </ul>
+</section>
+
+<section>
+  <h2>NgRx Effects</h2>
+
+  <ul>
+    <li>Die Redux-Architektur lässt es offen, wie Nebenwirkungen (Side Effects) umgesetzt werden</li>
+    <li>Effects sind eine hervorragende Lösung</li>
+    <li>Alle anderen Lösungen sind m.E. komplizierter oder schwerer zu testen</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Grundschema eines Effects</h2>
+
+  <ul>
+    <li>WENN eine gewisse Action eintritt</li>
+    <li>DANN Nebenwirkung ausführen</li>
+    <li>DANN Erfolgs-Action ausgeben</li>
+    <li>ODER Fehler-Action ausgeben</li>
+  </ul>
+</section>
+
+<section>
+  <h2>CounterEffects saveOnChange$</h2>
+
+  <ul>
+    <li>WENN Action INCREMENT eintritt</li>
+    <li>DANN aktuellen Count aus dem Store auslesen</li>
+    <li>DANN den Count an den Server senden</li>
+    <li>DANN SAVE_SUCCESS ausgeben</li>
+    <li>ODER SAVE_ERROR ausgeben</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Effects: Umsetzung</h2>
+
+  <ul>
+    <li>Ein Effect ist ein Observable</li>
+    <li>Bildet Actions auf Actions ab</li>
+    <li>Input: <code>Observable&lt;Action></code></li>
+    <li>Output: <code>Observable&lt;Action></code></li>
+    <li>Hat den Actions-Observable als Input</li>
+    <li>ggf. auch den Store</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Effect schematisch</h2>
+
+  <ol class="flow-blocks">
+    <li class="flow-block">Observable&lt;Action></li>
+    <li class="flow-block">Filter mit <code>ofType()</code></li>
+    <li class="flow-block">State holen mit <code>withLatestFrom(store)</code></li>
+    <li class="flow-block side-effect">Nebenwirkung (Service-Call)</li>
+    <li class="flow-block">Map auf Success-Action</li>
+    <li class="flow-block"><code>catchError</code> mit Error-Action</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Effects aus Sicht von Angular</h2>
+
+  <ul>
+    <li><code>CounterEffects</code> ist eine Klasse mit Eigenschaften vom Typ <code>Observable&lt;Action></code></li>
+    <li>Die Klasse nimmt an der Dependency Injection Teil (<code>@Injectable</code>)</li>
+    <li>Abhängigkeiten sind deklariert</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Effects: Abhängigkeiten</h2>
+
+<pre><code data-trim>
+public constructor(
+  private actions$: Actions,
+  private store: Store&lt;AppState>,
+  private counterApiService: CounterApiService,
+) {}
+</code></pre>
+
+</section>
+
+<section>
+  <h2>Effects: Abhängigkeiten mocken</h2>
+
+<pre><code data-trim>
+TestBed.configureTestingModule({
+  providers: [
+    { provide: Actions, useValue: ??? },
+    { provide: Store, useValue: ??? },
+    { provide: CounterApiService, useValue: ??? },
+    CounterEffects
+  ]
+});
+</code></pre>
+</section>
+
+<section>
+  <h2>Effects testen</h2>
+
+  <ol>
+    <li>Input-Observable mit Actions bereitstellen (<code>actions$</code>)</li>
+    <li>ggf. Mock-Store bereitstellen (<code>store</code>)</li>
+    <li>Service-Mock bereitstellen (<code>counterApiService</code>)</li>
+    <li>Output-Observable abonnieren, Werte prüfen</li>
+    <li>Service-Mock verifizieren</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Input-Observable mit Actions bereitstellen</h2>
+
+<pre><code data-trim>
+import { provideMockActions } from '@ngrx/effects/testing';
+
+const action = new Reset(123);
+provideMockActions(of(action))
+
+const actions = [ new Reset(123) ];
+provideMockActions(from(actions))
+</code></pre>
+</section>
+
+<section>
+  <h2>Mock-State erzeugen</h2>
+
+<pre><code data-trim>
+const mockState: Partial&lt;AppState> = {
+  counter: 1
+};
+</code></pre>
+</section>
+
+<section>
+  <h2>Mock-Store bereitstellen</h2>
+
+  <ul>
+    <li><a href="#provide-mock-store"><code>provideMockStore(mockState)</code></a></li>
+    <li>Es geht noch einfacher!</li>
+    <li>Der Store ist ein Observable</li>
+    <li><code>{ provide: Store, useValue: of(mockState) }</code></li>
+    <li>Annahme: <code>dispatch</code> und <code>select</code> werden nicht aufgerufen</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Service-Mock bereitstellen</h2>
+
+  <ul>
+    <li>Siehe <a href="#service-mock">Service-Abhängigkeit mocken</a></li>
+    <li>Mock-Klasse oder Mock-Objekt erzeugen</li>
+    <li>Jasmine Spies installieren (<code>spyOn()</code>)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Mock für <code>CounterApiService</code></h2>
+
+<pre><code data-trim>
+const mockCounterApi: Partial&lt;CounterApiService> = {
+  saveCounter() {
+    return of({});
+  }
+};
+
+spyOn(mockCounterApi, 'saveCounter').and.callThrough();
+</code></pre>
+</section>
+
+<section>
+  <h2>Output-Observable prüfen</h2>
+
+<pre><code data-trim>
+counterEffects.saveOnChange$.subscribe((outputAction) => {
+  expect(outputAction).toEqual(new SaveSuccess());
+});
+
+counterEffects.saveOnChange$
+  .pipe(toArray())
+  .subscribe((outputActions) => {
+    expect(outputAction).toEqual([ new SaveSuccess() ]);
+  });
+</code></pre>
+</section>
+
+<section>
+  <h2>Output-Observable prüfen: Helferlein</h2>
+
+<pre><code data-trim>
+function expectActions(
+  effect: Observable&lt;Action>, actions: Action[]
+) {
+  effect.pipe(toArray()).subscribe(
+    (actualActions) => {
+      expect(actualActions).toEqual(actions);
+    },
+    fail
+  );
+}
+
+expectActions(counterEffects.saveOnChange$, [
+  new SaveSuccess()
+]);
+</code></pre>
+</section>
+
+<section>
+<h2>Service-Mock verifizieren</h2>
+
+<pre><code data-trim>
+expect(mockCounterApi.saveCounter)
+  .toHaveBeenCalledWith(mockState.counter);
+</code></pre>
+</section>
+
+<section>
+  <h2>Fehlerfall testen</h2>
+
+  <p>Zweiter Service-Mock, der einen Fehler wirft</p>
+
+<pre><code data-trim>
+const mockCounterApiError: Partial&lt;CounterApiService> = {
+  saveCounter() {
+    return throwError(apiError);
+  }
+};
+</code></pre>
+
+<p>Eine Error-Action erwarten</p>
+
+<pre><code data-trim>
+expectActions(counterEffects.saveOnChange$, [
+  new SaveError()
+]);
+</code></pre>
+</section>
+
+<section>
+  <h2>Komplexe Effects testen</h2>
+
+  <ul>
+    <li>Die meisten Effects haben eine einfache RxJS-Logik:</li>
+    <li>Input Actions + Store + Nebenwirkung<br>&rarr; Output Action(s)</li>
+    <li>Für komplexe Effects eignet sich <a href="https://github.com/ReactiveX/rxjs/blob/master/doc/marble-testing.md">Marble Testing</a></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Effects testen: Zusammenfassung</h2>
+
+  <ul>
+    <li>Tiefes Verständnis von RxJS und NgRx nötig</li>
+    <li>Mocking: Input-Actions, Store, Service(s)</li>
+    <li>Helferlein sinnvoll</li>
+    <li>Dann relativ einfach und wenig Arbeit</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Reducer testen</h2>
+
+  <ul>
+    <li>Reducer sind Pure Functions</li>
+    <li>Reducer sind einfach zu testen</li>
+    <li>Werte rein, Werte raus</li>
+    <li>Nur Stubs, keine Mocks</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Reducer testen</h2>
+
+<pre><code data-trim>
+function partReducer(state: StatePart, action: Action): StatePart {}
+
+const state: StatePart = { … };
+const action = new SomeAction();
+expect(partReducer(state, action)).toEqual(expectedState);
+</code></pre>
+</section>
+
+<section>
+  <h2>Reducer testen</h2>
+
+  <ul>
+    <li></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Code Coverage</h2>
+</section>
+
+<section>
+  <h2>Testbaren Code schreiben</h2>
+
+  <ul>
+    <li>Do one thing and do it well</li>
+    <li>Logik in viele kleine Einheiten aufbrechen</li>
+    <li>Einheiten einzeln testen</li>
+    <li>Einheiten im Verbund testen</li>
+  </ul>
+</section>
+
+<!-- ******************************************************************** -->
+      </div>
+    </div>
+
+    <svg id="nineelements-logo" viewBox="0 0 144 144"><path fill="#000203" fill-rule="evenodd" d="M0 143.219h143.22V0H0v143.219zm106.908-42.01c-.573.219-4.531.374-1.73.691 1.759.198-1.072.339-1.063.974.58-.017 1.456 1.096 1.683 1.062.031.167-1.74.639-1.364.693 1.505.211-1.274.313-1.09.673.521 1.027-.256.678.722 1.149.522.252.369 1.173.025 1.25-.448.099-.583.341-.993.378-.058.373-.396.546-.845.61-.972.361-2.061.775-3.112.881-.679.069-.647.134-1.322.005-.722.095-1.824.155-2.544.085-.597.145-9.513.667-10.258.566-.594.127-4.162.25-4.894.146-.739.14-6.928.306-7.569.232-.752.131-1.91.185-2.666.083-.751.148-1.913.175-2.673.087-.736.138-17.094-.251-17.89-.374-.772.095-4.597-.033-5.357-.163-.636.095-1.593.029-2.229-.068-.742.104-1.896.046-2.617-.155-.415-.115-.686-.053-.864-.466-.146-.34-.107-.549-.381-.694-.321-.17-.341-.901-.13-1.175-.353-.751.139-2.154-.144-3.192-.169-.62.163-.586.465-1.15-.355.023-.431-.608-.39-.726.23-.655-.107-.974.383-1.529.295-.333.16-.606.687-.607.381.001.841.002 1.215.063a12.798 12.798 0 0 1 2.682.101c1.654-.112 9.103.159 10.712.414 1.538-.108 3.378 0 4.91.185 1.646-.083 29.265-.295 30.764-.367 1.646-.077 3.504-.327 5.141-.166 1.176-.194 2.688-.077 3.847.148 1.07-.038 1.571-.426 2.618-.371.066-.106 1.67.246 1.841.256.145-.25 1.581-.032 1.918-.012.37.025 2.852.352 2.512.483zm.835-12.344c.066.221.181.414.349.579-1.743-1.025-3.271-2.327-4.934-3.459.128.587 3.675 2.516 3.458 2.915-.049.105-4.593-3.258-4.659-3.203-.283.203.765 1.281.543 1.23.041.034.852.633.758.731-.185.067 4.865 3.851 4.422 4.385-.181.212-1.557-1.045-1.742-1.135.131.213.284.41.465.588-1.075-.639-1.943-1.521-2.959-2.231.134.253.322.466.561.639-.849.006-2.647-2.133-3.379-2.564-.236-.128-1.362-1.222-1.529-1.155a.172.172 0 0 0 .053.178 3.626 3.626 0 0 1-1.108-.797c.021.18-1.176-1.53-1.654-1.316.292.281.584.568.871.853-.964.21-1.739-2.206-3.041-1.66.105-.045 5.371 4.947 5.513 5.293-.017-.041-.313-.106-.324-.143.322 1.069 1.806 2.067 2.539 2.845-1.706-1.177-3.355-2.785-5.044-3.702-.663-.362-.874-1.054-1.511-.695-.136.075-1.567-.911-1.733-1.077-.031.262.013.512.129.75-1.336-1.054-2.603-2.609-4.168-3.362.36.514.703.938.799 1.159.112.25.287.42.342.703-2.251-1.802-4.486-3.664-6.629-5.594-.465-.418-2.842-2.603-3.217-1.936-.761-.692-5.863-5.057-6.912-5.267.846.697 1.587 1.495 2.412 2.212-.198.152-2.364-1.733-2.67-1.99a133.33 133.33 0 0 1-2.988-2.624c-.613-.556-1.2-1.109-1.793-1.654-1.102.865-2.968 2.436-3.23 2.646-.319.26-.686.416-1.001.749-.847.896-1.83 1.673-2.824 2.419-1.256.942-2.373 2.057-3.646 3.022.015-.168.215-.203.125-.432-.331.264-.658.502-.963.77a987.445 987.445 0 0 0-5.103 4.431c-1.271 1.116-2.5 2.278-3.798 3.364-1.426 1.187-2.788 2.446-4.204 3.642-1.436 1.219 1.998-1.01.673.331a3.453 3.453 0 0 1-.759.563c-.344.194-.586.491-.889.723-.349.266-.766.454-1.176.692.041-.462.038-.447-.418-.583-.355-.107-.629-.396-.83-.655-.294-.381-1.116-1.978-1.388-3.143a.51.51 0 0 1-.006-.242c.224-.883-.017-1.721-.309-2.553-.356-1.002-.317-2.045-.402-3.074-.049-.639.465-1.041.85-1.449.806-.86 1.601-1.755 2.521-2.49.599-.481 1.175-1.03 1.908-1.366.553-.25.882-.804 1.311-1.221.501-.494 1.072-.923 1.544-1.425.688-.731 1.717-1.104 2.403-1.841.598-.646 6.635-5.657 7.461-6.356 1.369-1.153 2.653-2.301 4.017-3.427l-.582-.501c-1.597-1.383-3.384-2.993-5.048-4.367-1.647-1.366-3.265-2.841-4.911-4.269-2.59-2.251-5.059-3.741-7.719-5.939-1.375-1.136-4.369-3.179-4.673-4.997-.211-1.264 1.546-2.559 2.13-3.424-.025.035 2.633-4.116 3.468-3.774.248.104.577-.254 1.168-.033.973.363 1.634 1.221 2.359 1.903 2.338 2.206 4.781 4.299 7.202 6.4 5.026 4.363 9.823 8.194 14.727 12.451.288-.217.576-.432.861-.652 1.007-.766 2.065-1.471 3.084-2.23 1.293-.949 2.609-1.865 3.925-2.792.623-.443 1.278-.851 1.886-1.312 1.163-.897 2.396-1.696 3.61-2.516 1.632-1.1 3.279-2.182 4.927-3.269a45.463 45.463 0 0 1 2.958-1.827c.438-.247.798-.643 1.306-.803.205-.067.382-.197.629-.351a77.907 77.907 0 0 1 4.274-2.525c1.76-.979 3.505-1.991 5.322-2.872.481-.233.986-.59 1.656-.605-.363.455-.801.721-1.206 1.078.393.202 1.112-.414 1.191-.264.112.206-.185.564-.093.518.261-.129.495-.345.849-.369-.233.39-.587.575-.895.838.477-.089.838-.503 1.441-.549-.6.514-1.257.712-1.819 1.074-.421.279-.89.492-1.34.733-.017.005-.044.009-.044.018-.085.485-.575.585-.855.908.463-.02.844-.223 1.214-.463.149.113-.072.191-.014.33 1.52-.565 2.795-1.666 4.384-2.11-.579.371-1.158.756-1.744 1.113-.461.28-.88.623-1.364.881-.402.213-.848.351-1.222.626-.127.097-.402.189-.28.393.131.232.373.173.606.038.694-.398 1.396-.772 2.098-1.148.05-.026.124-.003.189-.004-.191.611-.799.828-1.162 1.345.425-.062.672-.367 1.028-.476.618-.178 1.2-.442 1.881-.455.444-.008.882-.321 1.368-.426-.373.261-.761.51-1.124.792-.116.091-.407.083-.287.39.136.351.356.151.543.079.212-.082.42-.197.628-.298.067-.034.125-.041.156.044.024.069.023.135-.066.155-.437.082-.759.389-1.104.637-.345.25-.67.535-1.008.813.062.228.32-.193.363.09.037.228-.193.237-.293.283-1.677.743-3.04 1.991-4.568 2.964-.654.413-2.451 1.504-2.677 1.641-.666.397-1.32.823-1.969 1.252-.083.052-.289.062-.176.277.101.198.207.131.36.059.958-.461 1.903-.975 2.713-1.658.51-.427 1.125-.581 1.651-.946.654-.457 3.033-1.932 4.013-2.514.525-.314.502-.351 1.009-.14-.134.207-.4.236-.552.408-.478.508-1.01.949-1.544 1.379-.507.412-1.041.788-1.582 1.149-.226.15-.427.3-.553.559 1.657-.79 3.115-1.944 4.748-2.782-.523.585-1.255.861-1.879 1.3-.972.691-2.104 1.135-2.958 2-.219.223-.558.155-.808.37-.96.806-2.156 1.253-3.126 2.035-.357.293-.76.525-1.102.834-.137.12-.265.254-.452.294-.929.206-1.453 1.049-2.249 1.468-.503.269-.936.687-1.438.919-.601.291-1.133.688-1.657 1.051-.858.597-1.676 1.26-2.535 1.865-.46.321-1.036.477-1.39.957l.004-.009c-.719.293-1.262.853-1.898 1.273a40.114 40.114 0 0 0-3.055 2.248c-.202.168-.382.358-.59.524l.016-.022c-.7.041-.909.746-1.527 1.002.273.149-.734.594-.806.643-.495.343-1.071.267-1.465.711-.171.191-.528.401-.846.589 5.926 5.041 11.918 9.963 17.6 15.113 3.03 2.743 6.255 5.315 9.488 7.864 1.965 1.55 7.208 6.43 7.824 6.878-.236.21-3.291-2.132-3.689-2.456z"/></svg>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        // Display presentation control arrows
+        controls: false,
+        history: true,
+        slideNumber: true,
+        transition: 'fade',
+
+        dependencies: [
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+    </script>
+  </body>
+</html>
