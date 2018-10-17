@@ -1,8 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="noindex, nofollow">
 
     <title>Testing Angular Apps</title>
 
@@ -1406,7 +1407,7 @@ expectActions(counterEffects.saveOnChange$, [
 
   <ul>
     <li>Reducer sind Pure Functions</li>
-    <li>Reducer sind einfach zu testen</li>
+    <li>Daher einfach zu testen</li>
     <li>Werte rein, Werte raus</li>
     <li>Nur Stubs, keine Mocks</li>
   </ul>
@@ -1420,7 +1421,8 @@ function partReducer(state: StatePart, action: Action): StatePart {}
 
 const state: StatePart = { … };
 const action = new SomeAction();
-expect(partReducer(state, action)).toEqual(expectedState);
+const newState: StatePart = { … };
+expect(partReducer(state, action)).toEqual(newState);
 </code></pre>
 </section>
 
