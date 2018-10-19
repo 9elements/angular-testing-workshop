@@ -120,11 +120,10 @@
   <h2>Arbeitsgebiete</h2>
 
   <ul>
-    <li>Architektur von JavaScript-Webanwendungen</li>
-    <li>Setup &amp; Implementierung</li>
+    <li>JavaScript-Webanwendungen</li>
+    <li>Architektur, Setup &amp; Implementierung</li>
     <li>Optimierung &amp; Performance</li>
     <li>Interne und externe Schulungen</li>
-    <li>Consulting</li>
   </ul>
 </section>
 
@@ -132,9 +131,9 @@
   <h2>Vorstellung und aktueller Stand</h2>
 
   <ul>
-    <li>Testing-Praxis</li>
+    <li>Eigene Testing-Praxis</li>
     <li>Einstellung zu Testing</li>
-    <li>Eigene Einschätzung</li>
+    <li>Wissensstand</li>
     <li>Woran hapert es?</li>
     <li>Ziele</li>
   </ul>
@@ -149,35 +148,44 @@
   </ul>
 </section>
 
-<section>
+<section id="testing-overview">
   <h2>Software-Tests</h2>
 
   <ul>
     <li>Agile Entwicklung ermöglichen</li>
     <li>Move fast, fix things</li>
     <li>Refactoring ermöglichen, Regressions vermeiden</li>
-    <li>Testing verbessert die Architektur</li>
-    <li>Code ist einfach, lesbar und wartbar</li>
+    <li>Bessere Architektur</li>
+    <li>Einfacher, lesbarer, wartbarer Code</li>
   </ul>
 </section>
 
 <section>
 <h2>Arten von Software-Tests</h2>
 
-<ul>
+<ol>
   <li>Manuelle Tests</li>
   <li>Automatisierte Tests</li>
-</ul>
+</ol>
+</section>
+
+<section>
+<h2>Methodik</h2>
+
+<ol>
+  <li>Test-Driven Development (TDD) – Tests First</li>
+  <li>Testing After the Fact</li>
+</ol>
 </section>
 
 <section>
 <h2>Ebenen</h2>
 
-<ul>
+<ol>
   <li>Unit Tests</li>
   <li>Integration Tests</li>
   <li>Functional Tests (End-to-End Tests)</li>
-</ul>
+</ol>
 </section>
 
 <section>
@@ -186,7 +194,7 @@
   <ul>
     <li>Testbarkeit ist eines der Grundprinzipien</li>
     <li>Alle Teile sind relativ gut testbar</li>
-    <li>Angular bringt Werkzeuge zum Testen aller Teile mit sich</li>
+    <li>Angular bringt Werkzeuge zum Testen mit</li>
   </ul>
 </section>
 
@@ -194,7 +202,7 @@
   <h2>Testing in Angular (2)</h2>
 
   <ul>
-    <li>Ein Großteil der Komplexität ist auf die Testbarkeit zurückzuführen</li>
+    <li>Angulars Komplexität ist auf die Testbarkeit zurückzuführen</li>
     <li>Angulars Architektur erschließt sich nicht ohne Testing</li>
   </ul>
 </section>
@@ -206,7 +214,7 @@
     <li><strong>Wie</strong> man Angulars Werkzeuge verwendet, ist einem überlassen</li>
     <li>Projektweite Konventionen nötig</li>
     <li>Eigene Helferlein nötig</li>
-    <li>Tests sollten kurz, prägnant, lesbar und verständlich sein</li>
+    <li>Prägnante, lesbare und verständliche Tests</li>
   </ul>
 </section>
 
@@ -221,14 +229,14 @@
   </ul>
 </section>
 
-<section>
-<h2>Unit Test in Angular (1)</h2>
+<section id="unit-test-overview">
+  <h2>Unit Test in Angular (1)</h2>
 
-<ul>
-  <li>Testet die kleinste mögliche Code-Einheit</li>
-  <li>Testet eine Funktion oder Klasse</li>
-  <li>Testet einen Teil der App (Modul, Komponente, Service, Direktive…)</li>
-</ul>
+  <ul>
+    <li>Testet die kleinste mögliche Code-Einheit</li>
+    <li>Testet eine Funktion oder Klasse</li>
+    <li>Testet einen Teil der App (Modul, Komponente, Service, Direktive…)</li>
+  </ul>
 </section>
 
 <section>
@@ -293,7 +301,7 @@
   </ul>
 </section>
 
-<section>
+<section id="integration-test-overview">
   <h2>Integration Tests</h2>
   <ul>
     <li>Testet mehrere zusammenhängende Einheiten</li>
@@ -324,7 +332,7 @@
   </ul>
 </section>
 
-<section>
+<section id="e2e-test-overview">
   <h2>End-to-End Tests</h2>
 
   <ul>
@@ -345,7 +353,7 @@
   </ul>
 </section>
 
-<section>
+<section id="unit-test-detail">
   <h2>Unit Test ausführlich</h2>
 
   <ul>
@@ -610,6 +618,17 @@ click(fixture, 'incrementButton');
 </section>
 
 <section>
+  <h2>Tests debuggen</h2>
+
+  <ul>
+    <li>Chrome benutzen, Developer Tools öffnen</li>
+    <li>Test-Focus setzen mit <code>fdescribe()</code> und <code>fit()</code></li>
+    <li><code>console.log(…)</code> ist Gold wert</li>
+    <li>Debug-Ausgaben in Lifecycle-Methoden, Handlern und im Template</li>
+  </ul>
+</section>
+
+<section>
   <h2>Komplexe Komponenten</h2>
 
   <ul>
@@ -626,7 +645,7 @@ click(fixture, 'incrementButton');
   </ul>
 </section>
 
-<section>
+<section id="nested-components">
   <h2>Verschachtelte Komponenten testen</h2>
 
   <ul>
@@ -635,7 +654,7 @@ click(fixture, 'incrementButton');
   </ul>
 </section>
 
-<section>
+<section id="deep-rendering">
   <h2>Deep Rendering</h2>
 
   <ul>
@@ -646,7 +665,7 @@ click(fixture, 'incrementButton');
   </ul>
 </section>
 
-<section>
+<section id="shallow-rendering">
   <h2>Shallow Rendering (1)</h2>
   <ul>
     <li>Beispiel <a href="https://github.com/9elements/angular-workshop/blob/master/src/app/app.component.spec.ts">AppComponent</a></li>
@@ -723,7 +742,7 @@ expect(el.properties.startCount).toBe(5);
   </ul>
 </section>
 
-<section>
+<section id="service-dependency">
   <h2>Komponente mit Service-Abhängigkeit (1)</h2>
 
   <p>Beispiel <a href="https://github.com/9elements/angular-workshop/blob/master/src/app/service-counter/service-counter.component.ts">ServiceCounterComponent</a></p>
@@ -852,7 +871,7 @@ providers: [
   </ul>
 </section>
 
-<section>
+<section id="spies">
   <h2>Jasmine Spy</h2>
 
   <ul>
@@ -929,8 +948,10 @@ expect(mockCounterService.reset).toHaveBeenCalledWith(newCount);
   </ul>
 </section>
 
-<section>
+<section id="store-dependency">
   <h2>Komponente mit NgRx-Store-Abhängigkeit</h2>
+
+  <p><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/ngrx-counter/ngrx-counter.component.ts">NgRxCounterComponent</a></p>
 
 <pre class="typescript"><code data-trim>
 class NgRxCounterComponent {
@@ -980,6 +1001,15 @@ class NgRxCounterComponent {
     <li><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/spec-helpers/mock-store.spec-helper.ts">Helferlein</a>: <code>MockStore</code>, <code>makeMockStore(mockState)</code>, <code>provideMockStore(mockState)</code></li>
     <li><code>mockState</code> ist vom Typ <code>Partial&lt;AppState></code></li>
   </ul>
+
+<pre class="typescript"><code>
+TestBed.configureTestingModule({
+  declarations: [ NgRxCounterComponent ],
+  providers: [
+    provideMockStore(mockState)
+  ]
+}).compileComponents();
+</code></pre>
 </section>
 
 <section>
@@ -1073,7 +1103,7 @@ it('renders the data from the store', () => {
   </ul>
 </section>
 
-<section>
+<section id="services">
   <h2>Services – Was testen?</h2>
 
   <ul>
@@ -1175,7 +1205,7 @@ httpMock.verify();
   </ul>
 </section>
 
-<section>
+<section id="effects">
   <h2>NgRx Effects</h2>
 
   <ul>
@@ -1272,7 +1302,7 @@ TestBed.configureTestingModule({
 </code></pre>
 </section>
 
-<section>
+<section id="effects">
   <h2>Effects testen</h2>
 
   <ol>
@@ -1308,7 +1338,7 @@ const mockState: Partial&lt;AppState> = {
 </code></pre>
 </section>
 
-<section>
+<section id="mock-store">
   <h2>Mock-Store bereitstellen</h2>
 
   <ul>
@@ -1433,8 +1463,8 @@ expectActions(counterEffects.saveOnChange$, [
   </ul>
 </section>
 
-<section>
-  <h2>Reducer testen</h2>
+<section id="reducers">
+  <h2>Reducer testen (1)</h2>
 
   <ul>
     <li>Reducer sind Pure Functions</li>
@@ -1445,7 +1475,7 @@ expectActions(counterEffects.saveOnChange$, [
 </section>
 
 <section>
-  <h2>Reducer testen</h2>
+  <h2>Reducer testen (2)</h2>
 
 <pre class="typescript"><code data-trim>
 function partReducer(state: StatePart, action: Action): StatePart {}
@@ -1458,7 +1488,7 @@ expect(partReducer(state, action)).toEqual(newState);
 </section>
 
 <section>
-  <h2>Reducer testen</h2>
+  <h2>Reducer testen (3)</h2>
 
   <ul>
     <li>Beispiel <a href="https://github.com/9elements/angular-workshop/blob/master/src/app/reducers/counter.reducer.ts">counterReducer</a></li>
@@ -1468,7 +1498,7 @@ expect(partReducer(state, action)).toEqual(newState);
   </ul>
 </section>
 
-<section>
+<section id="immutability">
   <h2>Immutability in Reducern</h2>
 
   <ul>
@@ -1490,7 +1520,7 @@ expect(partReducer(state, action)).toEqual(newState);
   </ul>
 </section>
 
-<section>
+<section id="code-coverage">
   <h2>Code Coverage</h2>
 
   <ul>
@@ -1501,7 +1531,7 @@ expect(partReducer(state, action)).toEqual(newState);
 </section>
 
 <section>
-  <h2>Code Coverage</h2>
+  <h2>100% Code Coverage</h2>
 
   <ul>
     <li>100% Coverage ist möglich und sinnvoll</li>
@@ -1511,7 +1541,7 @@ expect(partReducer(state, action)).toEqual(newState);
 </section>
 
 <section>
-  <h2>100% Code Coverage</h2>
+  <h2>Wert der Code Coverage</h2>
 
   <ul>
     <li>Jede Zeile wurde mindestens einmal ausgeführt</li>
@@ -1519,7 +1549,7 @@ expect(partReducer(state, action)).toEqual(newState);
   </ul>
 </section>
 
-<section>
+<section id="e2e">
   <h2>End-to-End Tests in Angular</h2>
 
   <ul>
@@ -1686,7 +1716,6 @@ findEl(…)
 
 </section>
 
-
 <section>
   <h2>End-to-End Tests: Fazit</h2>
 
@@ -1699,7 +1728,7 @@ findEl(…)
   </ul>
 </section>
 
-<section>
+<section id="testing-benefits">
   <h2>Testen und Testbarkeit</h2>
 
   <ul>
