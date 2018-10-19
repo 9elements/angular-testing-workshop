@@ -176,7 +176,7 @@
 <ul>
   <li>Unit Tests</li>
   <li>Integration Tests</li>
-  <li>Functional-Tests (End-to-End-Tests)</li>
+  <li>Functional Tests (End-to-End Tests)</li>
 </ul>
 </section>
 
@@ -325,33 +325,23 @@
 </section>
 
 <section>
-  <h2>Functional Tests</h2>
+  <h2>End-to-End Tests</h2>
 
   <ul>
     <li>Testet die gesamte App aus User-Sicht</li>
-    <li>Automatisiert</li>
+    <li>User ↔ Frontend ↔ Backend ↔ DB</li>
     <li>Implementierungsdetails sind irrelevant</li>
   </ul>
 </section>
 
 <section>
-  <h2>Functional Test in Angular (1)</h2>
+  <h2>End-to-End Test in Angular</h2>
 
   <ul>
     <li>Startet einen Browser, navigiert zur App</li>
     <li>Simuliert Eingaben, z.B. Klicks auf Links</li>
     <li>Operiert nicht auf Code-Ebene</li>
     <li>Schaut nur die HTML-Ausgabe an</li>
-  </ul>
-</section>
-
-<section>
-  <h2>Functional Test in Angular (2)</h2>
-
-  <ul>
-    <li>End-to-end:<br>User ↔ Frontend ↔ Backend ↔ DB</li>
-    <li>WebDriver, Selenium</li>
-    <li>Protractor, Jasmine</li>
   </ul>
 </section>
 
@@ -468,27 +458,28 @@
     <li>Element heraussuchen</li>
     <li><code>triggerEventHandler</code> aufrufen</li>
   </ul>
-<pre><code class="javascript" data-trim>
+<pre class="typescript"><code class="javascript" data-trim>
 debugElement.triggerEventHandler(
-  type: string, event: Event
+  type: string,
+  event: Event
 )
 </code></pre>
 </section>
 
 <section>
-  <h2>Event-Objekt</h2>
+  <h2>Synthetisches Event-Objekt</h2>
 
-  <pre><code class="javascript" data-trim>
-  debugElement.triggerEventHandler('click', null)
-  debugElement.triggerEventHandler('click', {})
-  debugElement.triggerEventHandler('click', {
-    preventDefault() {},
-    stopPropagation() {},
-    target: debugElement.nativeElement,
-    currentTarget: debugElement.nativeElement,
-    pageX: 100,
-    pageY: 200
-  })
+<pre class="typescript"><code class="javascript" data-trim>
+debugElement.triggerEventHandler('click', null)
+debugElement.triggerEventHandler('click', {})
+debugElement.triggerEventHandler('click', {
+  preventDefault() {},
+  stopPropagation() {},
+  target: debugElement.nativeElement,
+  currentTarget: debugElement.nativeElement,
+  pageX: 100,
+  pageY: 200
+})
 </code></pre>
 </section>
 
@@ -552,7 +543,7 @@ debugElement.triggerEventHandler(
     <li>Counter bekommt einen Output: <code>countChange</code></li>
   </ul>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 &lt;app-counter
   [startCount]="5"
   (countChange)="logCount($event)"
@@ -565,7 +556,7 @@ debugElement.triggerEventHandler(
 
   <p>Inputs sind Eigenschaften der Komponenteninstanz</p>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 component.startCount = startCount;
 component.ngOnChanges();
 fixture.detectChanges();
@@ -577,6 +568,7 @@ fixture.detectChanges();
 
   <ul>
     <li>Outputs sind EventEmitter</li>
+    <li>EventEmitter sind Observables</li>
     <li><code>component.countChange.subscribe()</code></li>
     <li>Asynchroner Test mit <code>done()</code> oder <code>async()</code></li>
   </ul>
@@ -585,7 +577,7 @@ fixture.detectChanges();
 <section>
   <h2>Output testen (2)</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 component.countChange.subscribe((value: number) => {
   expect(value).toBe(1);
   done();
@@ -613,7 +605,7 @@ click(fixture, 'incrementButton');
     <li>Nur ins DOM schauen und Ereignisse auslösen</li>
     <li>Nur über Inputs und Outputs mit der Komponente sprechen</li>
     <li><em>Keine</em> Methoden aufrufen</li>
-    <li><em>Nicht</em> auf Eigenschaften zugreifen (auch wenn sie öffentlich sind)</li>
+    <li><em>Nicht</em> auf Eigenschaften zugreifen<br>(auch nicht wenn sie öffentlich sind)</li>
   </ul>
 </section>
 
@@ -677,7 +669,7 @@ click(fixture, 'incrementButton');
 <section>
   <h2>Shallow Rendering (3):<br>Kindkomponente vorhanden?</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 const el =
   fixture.debugElement.query(By.css('app-counter'));
 expect(el).toBeTruthy();
@@ -687,7 +679,7 @@ expect(el).toBeTruthy();
 <section>
   <h2>Shallow Rendering (4):<br>Kindkomponente vorhanden?</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 // Helferlein: Wirft einen Fehler, wenn nichts gefunden
 const el = findComponent(fixture, 'app-counter');
 expect(el).toBeTruthy();
@@ -701,11 +693,11 @@ expect().nothing();
 
   <p>DebugElement hat eine Eigenschaft <code>properties</code></p>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 &lt;app-counter [startCount]="5">&lt;/app-counter>
 </code></pre>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 const el = findComponent(fixture, 'app-counter');
 expect(el.properties.startCount).toBe(5);
 </code></pre>
@@ -874,7 +866,7 @@ providers: [
 <section>
   <h2>Unabhängigen Spy erzeugen</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 const spy = jasmine.createSpy('name');
 const spy = jasmine.createSpy('name')
   .and.callFake((…) => {…});
@@ -884,7 +876,7 @@ const spy = jasmine.createSpy('name')
 <section>
   <h2>Spy wrappt eine vorhandene Methode</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 spyOn(object, 'method');
 spyOn(object, 'method').and.callThrough();
 spyOn(object, 'method').and.returnValue(value);
@@ -894,7 +886,7 @@ spyOn(object, 'method').and.returnValue(value);
 <section>
   <h2>Spies verifizieren</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 expect(spy).toHaveBeenCalled();
 expect(spy).not.toHaveBeenCalled();
 expect(spy).toHaveBeenCalledTimes(5);
@@ -907,7 +899,7 @@ expect(object.method).toHaveBeenCalledWith(param1, …);
 <section>
   <h2>Spies am Mock-Service installieren</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 spyOn(mockCounterService, 'getCount').and.callThrough();
 spyOn(mockCounterService, 'increment');
 spyOn(mockCounterService, 'decrement');
@@ -918,7 +910,7 @@ spyOn(mockCounterService, 'reset');
 <section>
   <h2>Spies verifizieren</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 expect(mockCounterService.getCount).toHaveBeenCalled();
 expect(mockCounterService.increment).toHaveBeenCalled();
 expect(mockCounterService.decrement).toHaveBeenCalled();
@@ -1255,7 +1247,7 @@ httpMock.verify();
 <section>
   <h2>Effects: Abhängigkeiten</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 public constructor(
   private actions$: Actions,
   private store: Store&lt;AppState>,
@@ -1268,7 +1260,7 @@ public constructor(
 <section>
   <h2>Effects: Abhängigkeiten mocken</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 TestBed.configureTestingModule({
   providers: [
     { provide: Actions, useValue: ??? },
@@ -1295,7 +1287,7 @@ TestBed.configureTestingModule({
 <section>
   <h2>Input-Observable mit Actions bereitstellen</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 import { provideMockActions } from '@ngrx/effects/testing';
 
 const action = new Reset(123);
@@ -1309,7 +1301,7 @@ provideMockActions(from(actions))
 <section>
   <h2>Mock-State erzeugen</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 const mockState: Partial&lt;AppState> = {
   counter: 1
 };
@@ -1341,7 +1333,7 @@ const mockState: Partial&lt;AppState> = {
 <section>
   <h2>Mock für <code>CounterApiService</code></h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 const mockCounterApi: Partial&lt;CounterApiService> = {
   saveCounter() {
     return of({});
@@ -1355,7 +1347,7 @@ spyOn(mockCounterApi, 'saveCounter').and.callThrough();
 <section>
   <h2>Output-Observable prüfen</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 counterEffects.saveOnChange$.subscribe((outputAction) => {
   expect(outputAction).toEqual(new SaveSuccess());
 });
@@ -1371,7 +1363,7 @@ counterEffects.saveOnChange$
 <section>
   <h2>Output-Observable prüfen: Helferlein</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 function expectActions(
   effect: Observable&lt;Action>, actions: Action[]
 ) {
@@ -1392,7 +1384,7 @@ expectActions(counterEffects.saveOnChange$, [
 <section>
 <h2>Service-Mock verifizieren</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 expect(mockCounterApi.saveCounter)
   .toHaveBeenCalledWith(mockState.counter);
 </code></pre>
@@ -1403,7 +1395,7 @@ expect(mockCounterApi.saveCounter)
 
   <p>Zweiter Service-Mock, der einen Fehler wirft</p>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 const mockCounterApiError: Partial&lt;CounterApiService> = {
   saveCounter() {
     return throwError(apiError);
@@ -1413,7 +1405,7 @@ const mockCounterApiError: Partial&lt;CounterApiService> = {
 
 <p>Eine Error-Action erwarten</p>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 expectActions(counterEffects.saveOnChange$, [
   new SaveError()
 ]);
@@ -1455,7 +1447,7 @@ expectActions(counterEffects.saveOnChange$, [
 <section>
   <h2>Reducer testen</h2>
 
-<pre><code data-trim>
+<pre class="typescript"><code data-trim>
 function partReducer(state: StatePart, action: Action): StatePart {}
 
 const state: StatePart = { … };
@@ -1502,10 +1494,18 @@ expect(partReducer(state, action)).toEqual(newState);
   <h2>Code Coverage</h2>
 
   <ul>
+    <li>Welche Codezeilen wurden durch die Unit-Tests aufgerufen?</li>
     <li><a href="https://istanbul.js.org/">Istanbul test coverage tool</a></li>
     <li><code>ng test --code-coverage</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Code Coverage</h2>
+
+  <ul>
     <li>100% Coverage ist möglich und sinnvoll</li>
-    <li>Bei den letzten Prozent wird es interessant</li>
+    <li>Bei den letzten Prozent wird es erst interessant</li>
     <li>Edge Cases und schwer zu testbare Fälle</li>
   </ul>
 </section>
@@ -1520,13 +1520,194 @@ expect(partReducer(state, action)).toEqual(newState);
 </section>
 
 <section>
-  <h2>Testbaren Code schreiben</h2>
+  <h2>End-to-End Tests in Angular</h2>
 
   <ul>
+    <li><a href="https://www.w3.org/TR/webdriver1/">WebDriver-Protokoll</a>, Selenium</li>
+    <li>Fernsteuern eines Browsers</li>
+    <li>Auslesen von Inhalten</li>
+    <li><a href="https://www.protractortest.org/">Protractor</a>, Jasmine</li>
+  </ul>
+</section>
+
+<section>
+  <h2>End-to-End Test</h2>
+
+  <ul>
+    <li>Navigiert zu einer URL</li>
+    <li>Sucht Elemente heraus</li>
+    <li>Simuliert Maus- und Tastatur-Eingaben</li>
+    <li>Testet Elementinhalte</li>
+  </ul>
+</section>
+
+<section>
+  <h2>End-to-End Tests starten</h2>
+
+  <ul>
+    <li><code>ng e2e</code></li>
+    <li><code>e2e/app.e2e-spec.ts</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Protractor: Browser steuern</h2>
+
+  <ul>
+    <li><a href="https://www.protractortest.org/#/api">Protractor-API</a></li>
+    <li><code>browser.get('/')</code></li>
+    <li><code>browser.refresh()</code></li>
+    <li><code>browser.reset()</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Protractor: Einzelne Elemente finden</h2>
+
+<pre class="typescript"><code data-trim>
+element(by.id('…'))
+element(by.name('…'))
+element(by.className('…'))
+element(by.css('…'))
+$('…')
+element(by.css('[data-qa="count"]'))
+findEl('count')
+</code></pre>
+
+  <p><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/e2e.spec-helper.ts">Helferlein: <code>findEl</code></a></p>
+</section>
+
+<section>
+  <h2>Protractor: Viele Elemente finden</h2>
+
+<pre class="typescript"><code data-trim>
+element.all(by.id('…'))
+element.all(by.name('…'))
+element.all(by.className('…'))
+element.all(by.css('…'))
+$$('…')
+element.all(by.css('[data-qa="count"]'))
+findEls('count')
+</code></pre>
+
+<p><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/e2e.spec-helper.ts">Helferlein: <code>findEls</code></a></p>
+</section>
+
+<section>
+  <h2>Protractor: Textinhalt lesen</h2>
+
+<pre class="typescript"><code data-trim>
+// &lt;h1 data-qa="count">Hello&lt;/h1>
+const el = findEl('heading');
+expect(heading.getText()).toBe('Hello');
+</code></pre>
+</section>
+
+<section>
+  <h2>Protractor: Klicks</h2>
+
+<pre class="typescript"><code data-trim>
+// &lt;button data-qa="increment-button">+&lt;/button>
+findEl('increment-button').click();
+</code></pre>
+</section>
+
+<section>
+  <h2>Protractor: Tastatureingaben</h2>
+
+<pre class="typescript"><code data-trim>
+// &lt;input data-qa="reset-input">
+findEl('reset-input').sendKeys('123');
+</code></pre>
+</section>
+
+<section>
+  <h2>Protractor: Page Objects</h2>
+
+  <ul>
+    <li>Page Object ist eine einfache Klasse, die eine Seite repräsentiert</li>
+    <li>Page Object: Low-level, Test: High-Level</li>
+    <li>Ziel: Prägnanz und Lesbarkeit des Tests erhöhen</li>
+    <li>Wenn sich das Markup ändert:<br>Page Object ändern, Test nicht</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Protractor: Page Objects</h2>
+
+  <ul>
+    <li><code>*.po.ts</code></li>
+    <li>Einfache Klasse mit Methoden, meist Element-Getter</li>
+    <li>Selektoren (<code>data-qa</code>-Namen)</li>
+    <li><code>findEl</code>- und <code>findEls</code>-Aufrufe</li>
+    <li>Komplexere Eingabesequenzen</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Counter-App</h2>
+
+  <ul>
+    <li><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/app.e2e-spec.ts"><code>e2e/app.e2e-spec.ts</code></a></li>
+    <li><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/app.po.ts"><code>e2e/app.po.ts</code></a></li>
+    <li><code>ng e2e</code> oder separat:</li>
+    <li><code>ng serve</code></li>
+    <li><code>ng e2e --configuration=noserve</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>End-to-End Tests: Fallstricke</h2>
+
+  <ul>
+    <li>Alle WebDriver-Aktionen sind asynchron und geben Promises zurück</li>
+    <li>jasminewd ermöglicht es Tests zu schreiben, als wären die Aktionen synchron</li>
+    <li>E2E-Tests sehen Unit-Tests ähnlich, laufen aber fundamental anders</li>
+  </ul>
+</section>
+
+<section>
+  <h2>End-to-End Tests: Asynchronität</h2>
+
+<pre class="typescript"><code data-trim>
+const el = findEl(…);
+el.click();
+expect(el.getText()).toBe('Hello');
+</code></pre>
+
+<p>Intern:</p>
+
+<pre class="typescript"><code data-trim>
+findEl(…)
+  .then((el) => el.click())
+  .then((el) => el.getText())
+  .then((text) => expect(text).toBe('Hello');
+</code></pre>
+
+</section>
+
+
+<section>
+  <h2>End-to-End Tests: Fazit</h2>
+
+  <ul>
+    <li>Äußerst effektiv, um ein Feature unter realen Bedingungen zu testen</li>
+    <li>Hochkomplex, daher unzuverlässig und fehleranfällig</li>
+    <li>Konventionen nötig</li>
+    <li>Protractor stammt aus Angular-1-Zeiten</li>
+    <li>Simulierte Synchronität ist schwarze Magie</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Testen und Testbarkeit</h2>
+
+  <ul>
+    <li>Testing lehrt testbaren Code zu schreiben</li>
+    <li>Testbarer Code ist besserer Code</li>
     <li>Do one thing and do it well</li>
-    <li>Logik in viele kleine Einheiten aufbrechen</li>
-    <li>Einheiten einzeln testen</li>
-    <li>Einheiten im Verbund testen</li>
+    <li>Logik in kleine, wohldefinierte Einheiten aufbrechen</li>
+    <li>Einheiten einzeln und im Verbund testen</li>
   </ul>
 </section>
 
