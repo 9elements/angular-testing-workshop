@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
 
     <title>Testing Angular Apps</title>
@@ -108,7 +108,6 @@
   <ul>
     <li>Webentwicklung seit 1999</li>
     <li><a href="https://molily.de/artikel/">Technische Fachartikel</a></li>
-    <li>Germanistik und Philosophie, RUB</li>
     <li>SELFHTML-Redaktion, 2005—2009</li>
     <li>Angestellt bei 9elements, seit 2007</li>
     <li><a href="https://github.com/chaplinjs/chaplin">Chaplin.js</a>, 2012</li>
@@ -136,6 +135,26 @@
     <li>Wissensstand</li>
     <li>Woran hapert es?</li>
     <li>Ziele</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Voraussetzungen</h2>
+
+  <ul>
+    <li>Grundwissen in Angular</li>
+    <li>Komponenten, Services</li>
+    <li>Dependency Injection</li>
+    <li>NgRx: Actions, Reducer, Effects</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Beispielanwendungen mit Tests</h2>
+
+  <ul>
+    <li><a href="https://github.com/9elements/angular-workshop">Counter in drei Ausführungen</a></li>
+    <li><a href="https://github.com/9elements/angular-flickr-search">Flickr-Suche</a></li>
   </ul>
 </section>
 
@@ -369,7 +388,7 @@
   <h2>Counter-Funktionalität</h2>
 
   <ul>
-    <li>Komponente hat einen aktuellen Count-Wert</li>
+    <li>Komponente hält aktuellen Count-Wert</li>
     <li>Anzeige des Count-Werts</li>
     <li>Button zum Erhöhen des Count-Wertes</li>
   </ul>
@@ -515,7 +534,7 @@ debugElement.triggerEventHandler('click', {
   <h2>Counter-Funktionalität erweitern</h2>
 
   <ul>
-    <li>Decrement wie Increment</li>
+    <li>Decrement</li>
     <li>Reset: Eingabefeld und Reset-Button</li>
   </ul>
 </section>
@@ -760,7 +779,6 @@ class ServiceCounterComponent {
   <h2>Komponente mit Service-Abhängigkeit (2)</h2>
 
   <ul>
-    <li>Constructor Injection</li>
     <li>Unit Test – Service wird gemockt</li>
     <li>Integration Test – Service wird mitgetestet</li>
   </ul>
@@ -848,15 +866,15 @@ const mockCounterService: Partial&lt;CounterService> = {
 
   <p>Im Testing Module:</p>
 
-<pre class="typescript"><code data-trim>
+<pre class="typescript"><code data-trim data-noescape>
 providers: [
-  { provide: CounterService, useClass: MockCounterService }
+  { provide: CounterService, <strong>useClass</strong>: MockCounterService }
 ]
 </code></pre>
 
-<pre class="typescript"><code data-trim>
+<pre class="typescript"><code data-trim data-noescape>
 providers: [
-  { provide: CounterService, useValue: mockCounterService }
+  { provide: CounterService, <strong>useValue</strong>: mockCounterService }
 ]
 </code></pre>
 </section>
@@ -1002,7 +1020,7 @@ class NgRxCounterComponent {
     <li><code>mockState</code> ist vom Typ <code>Partial&lt;AppState></code></li>
   </ul>
 
-<pre class="typescript"><code>
+<pre class="typescript"><code data-trim>
 TestBed.configureTestingModule({
   declarations: [ NgRxCounterComponent ],
   providers: [
@@ -1123,7 +1141,7 @@ it('renders the data from the store', () => {
     <li>Standard-<code>TestBed</code></li>
     <li>
       Eine Spec für jede öffentliche Methode:<br>
-      <code>increment</code>, <code>decrement</code>, <code>reset</code>
+      <code>getCount</code>, <code>increment</code>, <code>decrement</code>, <code>reset</code>
     </li>
     <li>Auswirkung testen durch <code>getCount</code>-Aufruf</li>
   </ul>
@@ -1302,7 +1320,7 @@ TestBed.configureTestingModule({
 </code></pre>
 </section>
 
-<section id="effects">
+<section id="testing-effects">
   <h2>Effects testen</h2>
 
   <ol>
@@ -1741,9 +1759,12 @@ findEl(…)
 </section>
 
 <section>
-  <svg style="display: block; width: 100%; height: 40vh">
-    <use xlink:href="#nineelements-logo-path" />
-  </svg>
+  <h2>
+    <svg style="display: block; width: 100%; height: 40vh">
+      <title>9elements</title>
+      <use xlink:href="#nineelements-logo-path" />
+    </svg>
+  </h2>
 </section>
 
 <!-- ******************************************************************** -->
