@@ -498,7 +498,6 @@ debugElement.triggerEventHandler(
 
 <pre class="typescript"><code class="javascript" data-trim>
 debugElement.triggerEventHandler('click', null)
-debugElement.triggerEventHandler('click', {})
 debugElement.triggerEventHandler('click', {
   preventDefault() {},
   stopPropagation() {},
@@ -558,6 +557,7 @@ debugElement.triggerEventHandler('click', {
     <li><code>findEls(fixture, qaAttribute): DebugElement[]</code></li>
     <li><code>getText(fixture, qaAttribute): string</code></li>
     <li><code>expectText(fixture, qaAttribute, text)</code></li>
+    <li><code>setFieldValue(fixture, qaAttribute, text)</code></li>
     <li><code>click(fixture, qaAttribute)</code></li>
   </ul>
 </section>
@@ -597,7 +597,6 @@ fixture.detectChanges();
     <li>Outputs sind EventEmitter</li>
     <li>EventEmitter sind Observables</li>
     <li><code>component.countChange.subscribe()</code></li>
-    <li>Asynchroner Test mit <code>done()</code> oder <code>async()</code></li>
   </ul>
 </section>
 
@@ -605,12 +604,13 @@ fixture.detectChanges();
   <h2>Output testen (2)</h2>
 
 <pre class="typescript"><code data-trim>
+let actualValue: number | undefined;
 component.countChange.subscribe((value: number) => {
-  expect(value).toBe(1);
-  done();
+  actualValue = value;
 });
 
-click(fixture, 'incrementButton');
+click(fixture, 'increment-button');
+expect(actualValue).toBe(1);
 </code></pre>
 </section>
 
@@ -842,7 +842,7 @@ class MockCounterService implements Partial&lt;CounterService> {
   increment() {}
   decrement() {}
   reset() {}
-};
+}
 </code></pre>
 </section>
 
@@ -1005,7 +1005,7 @@ class NgRxCounterComponent {
   <h2>Store mocken (3)</h2>
 
   <ul>
-    <li>In 99% der Fälle reicht es, einen Store mit vordefiniertem State bereitzustellen</li>
+    <li>In 99% der Fälle reicht ein Store mit vordefiniertem State</li>
     <li>👩‍🔬 Eigenen Mock-Store bauen</li>
     <li>Der NgRx Store kocht auch nur mit RxJS</li>
     <li>Verhält sich wie ein <code>BehaviorSubject</code></li>
@@ -1015,18 +1015,25 @@ class NgRxCounterComponent {
 <section id="provide-mock-store">
   <h2>Eigener Mock-Store</h2>
 
-  <ul>
-    <li><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/spec-helpers/mock-store.spec-helper.ts">Helferlein</a>: <code>MockStore</code>, <code>makeMockStore(mockState)</code>, <code>provideMockStore(mockState)</code></li>
-    <li><code>mockState</code> ist vom Typ <code>Partial&lt;AppState></code></li>
-  </ul>
+  <p><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/spec-helpers/mock-store.spec-helper.ts">Helferlein: <code>MockStore</code>, <code>makeMockStore(mockState)</code>, <code>provideMockStore(mockState)</code></a></p>
 
-<pre class="typescript"><code data-trim>
+<pre class="typescript"><code data-trim data-noescape>
 TestBed.configureTestingModule({
   declarations: [ NgRxCounterComponent ],
   providers: [
-    provideMockStore(mockState)
+    <u>provideMockStore(mockState)</u>
   ]
 }).compileComponents();
+</code></pre>
+</section>
+
+<section>
+  <h2>Mock-State erzeugen</h2>
+
+<pre class="typescript"><code data-trim>
+const mockState: Partial&lt;AppState> = {
+  counter: 1
+};
 </code></pre>
 </section>
 
@@ -1374,7 +1381,7 @@ const mockState: Partial&lt;AppState> = {
   <ul>
     <li>Siehe <a href="#service-mock">Service-Abhängigkeit mocken</a></li>
     <li>Mock-Klasse oder Mock-Objekt erzeugen</li>
-    <li>Jasmine Spies installieren (<code>spyOn()</code>)</li>
+    <li>Jasmine Spies installieren mit <code>spyOn()</code></li>
   </ul>
 </section>
 
@@ -1403,7 +1410,7 @@ counterEffects.saveOnChange$.subscribe((outputAction) => {
 counterEffects.saveOnChange$
   .pipe(toArray())
   .subscribe((outputActions) => {
-    expect(outputAction).toEqual([ new SaveSuccess() ]);
+    expect(outputActions).toEqual([ new SaveSuccess() ]);
   });
 </code></pre>
 </section>
@@ -1512,7 +1519,7 @@ expect(partReducer(state, action)).toEqual(newState);
     <li>Beispiel <a href="https://github.com/9elements/angular-workshop/blob/master/src/app/reducers/counter.reducer.ts">counterReducer</a></li>
     <li>Initialisierung: <code>state = initialState</code></li>
     <li>Default-Fall (<code>return state)</code></li>
-    <li>Verhalten bei allen relevanten Actions</li>
+    <li>State-Änderung bei den relevanten Actions</li>
   </ul>
 </section>
 
@@ -1523,7 +1530,6 @@ expect(partReducer(state, action)).toEqual(newState);
     <li>Reducer dürfen den State nicht ändern</li>
     <li>Müssen einen neues Objekt (Kopie) erzeugen</li>
     <li><code>{ ...state, property: newValue }</code></li>
-    <li>Der Test muss das nachvollziehen</li>
   </ul>
 </section>
 
