@@ -254,7 +254,7 @@
   <ul>
     <li>Testet die kleinste mögliche Code-Einheit</li>
     <li>Testet eine Funktion oder Klasse</li>
-    <li>Testet einen Teil der App (Modul, Komponente, Service, Direktive…)</li>
+    <li>Testet einen Teil der App:<br>Modul, Komponente, Service, Direktive…</li>
   </ul>
 </section>
 
@@ -293,7 +293,7 @@
     <dd>Zustand &amp; Verhalten verifizieren</dd>
   </dl>
 
-  <p><small><a href="https://angular-buch.com/">Quelle: Angular-Buch, dpunkt.verlag 2017, S. 383</a></small></p>
+  <p><small><a href="https://angular-buch.com/">Quelle: Angular-Buch, dpunkt.verlag, 1. Auflage 2017, S. 383</a></small></p>
 </section>
 
 <section>
@@ -312,7 +312,7 @@
   <h2>Unit Test in Angular (4)</h2>
 
   <ul>
-    <li>Testet einen Teil der App (Modul, Komponente, Service, Direktive…)</li>
+    <li>Testet einen Teil der App<br>(Modul, Komponente, Service, Direktive…)</li>
     <li><code>*.spec.ts</code></li>
     <li><a href="https://karma-runner.github.io">Karma Test Runner</a></li>
     <li><a href="https://jasmine.github.io/">Jasmine</a> für Test Suites und Assertions</li>
@@ -981,47 +981,22 @@ class NgRxCounterComponent {
 </section>
 
 <section>
-  <h2>Store mocken (1)</h2>
+  <h2>Mock-Store bereitstellen (1)</h2>
+  <p><a href="https://ngrx.io/guide/store/testing">Offizielle Methode</a></p>
 
-  <ul>
-    <li><a href="https://github.com/ngrx/platform/blob/master/docs/store/testing.md">Offizielle Methode</a></li>
-    <li><code>StoreModule.forRoot(reducers, initialState)</code></li>
-    <li>Viel zu komplex!</li>
-  </ul>
+<pre class="typescript"><code data-trim>
+provideMockStore({ initialState: {…}, selectors: {…} })
+</code></pre>
 </section>
 
 <section>
-  <h2>Store mocken (2)</h2>
+  <h2>Mock-Store bereitstellen (2)</h2>
 
-  <ul>
-    <li>Reducer sind irrelevant für den Komponententest</li>
-    <li>Ein Reducer für jede Eigenschaft von AppState ist nötig</li>
-    <li>Die Original-Reducer liefern nur den initialState</li>
-    <li>Selbst leere Reducer sind aufwändig aufzusetzen</li>
-  </ul>
-</section>
-
-<section>
-  <h2>Store mocken (3)</h2>
-
-  <ul>
-    <li>In 99% der Fälle reicht ein Store mit vordefiniertem State</li>
-    <li>👩‍🔬 Eigenen Mock-Store bauen</li>
-    <li>Der NgRx Store kocht auch nur mit RxJS</li>
-    <li>Verhält sich wie ein <code>BehaviorSubject</code></li>
-  </ul>
-</section>
-
-<section id="provide-mock-store">
-  <h2>Eigener Mock-Store</h2>
-
-  <p><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/spec-helpers/mock-store.spec-helper.ts">Helferlein: <code>MockStore</code>, <code>makeMockStore(mockState)</code>, <code>provideMockStore(mockState)</code></a></p>
-
-<pre class="typescript"><code data-trim data-noescape>
+<pre class="typescript"><code data-trim>
 TestBed.configureTestingModule({
   declarations: [ NgRxCounterComponent ],
   providers: [
-    <u>provideMockStore(mockState)</u>
+    provideMockStore({ initialState: mockState })
   ]
 }).compileComponents();
 </code></pre>
@@ -1049,9 +1024,18 @@ const mockState: Partial&lt;AppState> = {
 </section>
 
 <section>
-  <h2>Dispatch von Actions testen</h2>
+  <h2>Dispatch von Actions testen (1)</h2>
 
-  <p><code>MockStore#dispatch</code> ist ein Jasmine Spy</p>
+  <p>In <code>beforeEach</code> einen Spy auf <code>MockStore#dispatch</code> installieren</p>
+
+<pre class="typescript"><code data-trim>
+store = TestBed.get(Store);
+spyOn(store , 'dispatch');
+</code></pre>
+</section>
+
+<section>
+  <h2>Dispatch von Actions testen (1)</h2>
 
 <pre class="typescript"><code data-trim>
 it('resets the count', () => {
@@ -1080,10 +1064,11 @@ it('resets the count', () => {
 function setup(<u>mockState</u>: Partial&lt;AppState>) {
   TestBed.configureTestingModule({
     declarations: [ NgRxCounterComponent ],
-    providers: [ provideMockStore(<u>mockState</u>) ]
+    providers: [ provideMockStore({ initialState: <u>mockState</u> }) ]
   }).compileComponents();
 
   const store: Store = TestBed.get(Store);
+  spyOn(store, 'dispatch');
 
   const fixture = TestBed.createComponent(NgRxCounterComponent);
   fixture.detectChanges();
@@ -1166,7 +1151,7 @@ it('renders the data from the store', () => {
 <pre class="typescript"><code data-trim>
 TestBed.configureTestingModule({
   imports: [ HttpClientTestingModule ],
-  providers: [ CounterApiService]
+  providers: [ CounterApiService ]
 });
 </code></pre>
 </section>
@@ -1255,11 +1240,11 @@ httpMock.verify();
   <h2><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/effects/counter.effects.ts">CounterEffects saveOnChange$</a></h2>
 
   <ul>
-    <li>WENN Action INCREMENT eintritt</li>
+    <li>WENN Action <code>increment</code> eintritt</li>
     <li>DANN aktuellen Count aus dem Store auslesen</li>
     <li>DANN den Count an den Server senden</li>
-    <li>DANN SAVE_SUCCESS ausgeben</li>
-    <li>ODER SAVE_ERROR ausgeben</li>
+    <li>DANN <code>saveSuccess</code> ausgeben</li>
+    <li>ODER <code>saveError</code> ausgeben</li>
   </ul>
 </section>
 
@@ -1345,10 +1330,10 @@ TestBed.configureTestingModule({
 <pre class="typescript"><code data-trim>
 import { provideMockActions } from '@ngrx/effects/testing';
 
-const action = new Reset(123);
+const action = reset({ count: 123 });
 provideMockActions(of(action))
 
-const actions = [ new Reset(123) ];
+const actions = [ reset({ count: 123 }) ];
 provideMockActions(from(actions))
 </code></pre>
 </section>
@@ -1367,11 +1352,11 @@ const mockState: Partial&lt;AppState> = {
   <h2>Mock-Store bereitstellen</h2>
 
   <ul>
-    <li><a href="#provide-mock-store"><code>provideMockStore(mockState)</code></a></li>
+    <li><a href="#provide-mock-store"><code>provideMockStore()</code></a></li>
     <li>Es geht noch einfacher!</li>
     <li>Der Store ist ein Observable</li>
     <li><code>{ provide: Store, useValue: of(mockState) }</code></li>
-    <li>Annahme: <code>dispatch</code> und <code>select</code> werden nicht aufgerufen</li>
+    <li>Bedingung: <code>dispatch</code> und <code>select</code> werden nicht aufgerufen</li>
   </ul>
 </section>
 
@@ -1389,7 +1374,9 @@ const mockState: Partial&lt;AppState> = {
   <h2>Mock für <code>CounterApiService</code></h2>
 
 <pre class="typescript"><code data-trim>
-const mockCounterApi: Partial&lt;CounterApiService> = {
+type PartialCounterApiService = Pick&lt;CounterApiService, 'saveCounter'&gt;;
+
+const mockCounterApi: PartialCounterApiService = {
   saveCounter() {
     return of({});
   }
@@ -1404,13 +1391,13 @@ spyOn(mockCounterApi, 'saveCounter').and.callThrough();
 
 <pre class="typescript"><code data-trim>
 counterEffects.saveOnChange$.subscribe((outputAction) => {
-  expect(outputAction).toEqual(new SaveSuccess());
+  expect(outputAction).toEqual(saveSuccess());
 });
 
 counterEffects.saveOnChange$
   .pipe(toArray())
   .subscribe((outputActions) => {
-    expect(outputActions).toEqual([ new SaveSuccess() ]);
+    expect(outputActions).toEqual([ saveSuccess() ]);
   });
 </code></pre>
 </section>
@@ -1431,7 +1418,7 @@ function expectActions(
 }
 
 expectActions(counterEffects.saveOnChange$, [
-  new SaveSuccess()
+  saveSuccess()
 ]);
 </code></pre>
 </section>
@@ -1451,7 +1438,7 @@ expect(mockCounterApi.saveCounter)
   <p>Zweiter Service-Mock, der einen Fehler wirft</p>
 
 <pre class="typescript"><code data-trim>
-const mockCounterApiError: Partial&lt;CounterApiService> = {
+const mockCounterApiError: PartialCounterApiService = {
   saveCounter() {
     return throwError(apiError);
   }
@@ -1462,7 +1449,7 @@ const mockCounterApiError: Partial&lt;CounterApiService> = {
 
 <pre class="typescript"><code data-trim>
 expectActions(counterEffects.saveOnChange$, [
-  new SaveError()
+  saveError({ error: apiError })
 ]);
 </code></pre>
 </section>
@@ -1473,7 +1460,8 @@ expectActions(counterEffects.saveOnChange$, [
   <ul>
     <li>Die meisten Effects haben eine einfache RxJS-Logik</li>
     <li>Input Actions + Store + Nebenwirkung<br>&rarr; Output Action(s)</li>
-    <li>Für komplexe Effects eignet sich <a href="https://github.com/ReactiveX/rxjs/blob/master/doc/marble-testing.md">Marble Testing</a></li>
+    <li>Komplexen Effect in mehrere einfache zerlegen</li>
+    <li><a href="https://ngrx.io/guide/effects/testing#marble-diagrams">Marble Testing</a></li>
   </ul>
 </section>
 
@@ -1506,7 +1494,7 @@ expectActions(counterEffects.saveOnChange$, [
 function partReducer(state: StatePart, action: Action): StatePart {}
 
 const state: StatePart = { … };
-const action = new SomeAction();
+const action = someAction();
 const newState: StatePart = { … };
 expect(partReducer(state, action)).toEqual(newState);
 </code></pre>
@@ -1537,10 +1525,10 @@ expect(partReducer(state, action)).toEqual(newState);
   <h2>Immutability-Helferlein</h2>
 
   <ul>
+    <li><a href="https://ngrx.io/guide/store/configuration/runtime-checks">strictStateImmutability</a><br>(ehemals <a href="https://github.com/brandonroberts/ngrx-store-freeze">ngrx-store-freeze</a>)</li>
     <li><a href="https://github.com/mweststrate/immer">immer.js</a></li>
     <li><a href="https://github.com/kolodny/immutability-helper">immutability helper</a></li>
     <li><a href="https://github.com/rtfeldman/seamless-immutable">seamless immutable</a></li>
-    <li><a href="https://github.com/brandonroberts/ngrx-store-freeze">ngrx-store-freeze</a></li>
   </ul>
 </section>
 
