@@ -832,10 +832,21 @@ class ServiceCounterComponent {
 </section>
 
 <section>
+  <h2>Partial-Typ vorbereiten</h2>
+
+<pre class="typescript"><code data-trim>
+type PartialCounterService = Pick&lt;
+  CounterService,
+  'getCount' | 'increment' | 'decrement' | 'reset'
+>;
+</code></pre>
+</section>
+
+<section>
   <h2>☀️ Mock-Service als Klasse</h2>
 
 <pre class="typescript"><code data-trim>
-class MockCounterService implements Partial&lt;CounterService> {
+class MockCounterService implements PartialCounterService {
   getCount() {
     return of(count);
   }
@@ -850,7 +861,7 @@ class MockCounterService implements Partial&lt;CounterService> {
   <h2>☀️ Mock-Service als Objekt</h2>
 
 <pre class="typescript"><code data-trim>
-const mockCounterService: Partial&lt;CounterService> = {
+const mockCounterService: PartialCounterService = {
   getCount() {
     return of(count);
   },
