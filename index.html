@@ -993,7 +993,7 @@ class NgRxCounterComponent {
 </code></pre>
 </section>
 
-<section>
+<section id="provide-mock-store">
   <h2>Mock-Store bereitstellen (1)</h2>
   <p><a href="https://ngrx.io/guide/store/testing">Offizielle Methode</a></p>
 
@@ -1361,15 +1361,14 @@ const mockState: Partial&lt;AppState> = {
 </code></pre>
 </section>
 
-<section id="mock-store">
+<section>
   <h2>Mock-Store bereitstellen</h2>
 
   <ul>
     <li><a href="#provide-mock-store"><code>provideMockStore()</code></a></li>
-    <li>Es geht noch einfacher!</li>
+    <li>Es geht noch einfacher, wenn <code>dispatch</code> und <code>select</code> nicht aufgerufen werden</li>
     <li>Der Store ist ein Observable</li>
     <li><code>{ provide: Store, useValue: of(mockState) }</code></li>
-    <li>Bedingung: <code>dispatch</code> und <code>select</code> werden nicht aufgerufen</li>
   </ul>
 </section>
 
