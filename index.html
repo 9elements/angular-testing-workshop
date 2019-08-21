@@ -1080,7 +1080,7 @@ function setup(<u>mockState</u>: Partial&lt;AppState>) {
     providers: [ provideMockStore({ initialState: <u>mockState</u> }) ]
   }).compileComponents();
 
-  const store: Store = TestBed.get(Store);
+  const store: Store&lt;AppState> = TestBed.get(Store);
   spyOn(store, 'dispatch');
 
   const fixture = TestBed.createComponent(NgRxCounterComponent);
