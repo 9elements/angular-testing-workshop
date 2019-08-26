@@ -445,9 +445,9 @@
   <ul>
     <li><del>IDs</del></li>
     <li>Klassen: <code>class="qa-count"</code></li>
-    <li>data-Attribute: <code>data-qa="count"</code></li>
-    <li>Empfehlung: <code>data-qa</code></li>
-    <li><code>query(By.css('[data-qa="count"]'))</code></li>
+    <li>data-Attribute: <code>data-testid="count"</code></li>
+    <li>Empfehlung: <code>data-testid</code></li>
+    <li><code>query(By.css('[data-testid="count"]'))</code></li>
   </ul>
 </section>
 
@@ -1624,7 +1624,7 @@ element(by.name('…'))
 element(by.className('…'))
 element(by.css('…'))
 $('…')
-element(by.css('[data-qa="count"]'))
+element(by.css('[data-testid="count"]'))
 findEl('count')
 </code></pre>
 
@@ -1640,7 +1640,7 @@ element.all(by.name('…'))
 element.all(by.className('…'))
 element.all(by.css('…'))
 $$('…')
-element.all(by.css('[data-qa="count"]'))
+element.all(by.css('[data-testid="count"]'))
 findEls('count')
 </code></pre>
 
@@ -1651,7 +1651,7 @@ findEls('count')
   <h2>Protractor: Textinhalt lesen</h2>
 
 <pre class="typescript"><code data-trim>
-// &lt;h1 data-qa="count">Hello&lt;/h1>
+// &lt;h1 data-testid="count">Hello&lt;/h1>
 const el = findEl('heading');
 expect(heading.getText()).toBe('Hello');
 </code></pre>
@@ -1661,7 +1661,7 @@ expect(heading.getText()).toBe('Hello');
   <h2>Protractor: Klicks</h2>
 
 <pre class="typescript"><code data-trim>
-// &lt;button data-qa="increment-button">+&lt;/button>
+// &lt;button data-testid="increment-button">+&lt;/button>
 findEl('increment-button').click();
 </code></pre>
 </section>
@@ -1670,7 +1670,7 @@ findEl('increment-button').click();
   <h2>Protractor: Tastatureingaben</h2>
 
 <pre class="typescript"><code data-trim>
-// &lt;input data-qa="reset-input">
+// &lt;input data-testid="reset-input">
 findEl('reset-input').sendKeys('123');
 </code></pre>
 </section>
@@ -1692,7 +1692,7 @@ findEl('reset-input').sendKeys('123');
   <ul>
     <li><code>*.po.ts</code></li>
     <li>Einfache Klasse mit Methoden, meist Element-Getter</li>
-    <li>Selektoren (<code>data-qa</code>-Namen)</li>
+    <li>Selektoren (<code>data-testid</code>-Namen)</li>
     <li><code>findEl</code>- und <code>findEls</code>-Aufrufe</li>
     <li>Komplexere Eingabesequenzen</li>
   </ul>
