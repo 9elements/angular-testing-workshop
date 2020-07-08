@@ -40,8 +40,8 @@ The workshop uses these example applications for exercises:
 
 ## Book the workshop!
 
-Do you want to book workshop for your developers? Contact us: [contact@9elements.com](mailto:contact@9elements.com)
+Do you want to book the workshop for your developers? Contact us: [contact@9elements.com](mailto:contact@9elements.com)
 
-The workshop language is English or German.
+The workshop language is English or German. Remote workshops using videotelephony are possible.
 
 [Learn more about 9elements.](https://9elements.com)
