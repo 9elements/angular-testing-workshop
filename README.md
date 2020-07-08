@@ -1,8 +1,3 @@
-<svg style="width: 150px; height: 150px; background-color: black" viewBox="0 0 250 250"><g fill="#fff"><path d="m125 153.4h-24.7l-11.7 29.2h-21.7-.1l58.2-130.5v.1-22.2l-93.1 33.2 14.2 123.1 78.9 43.7z"/><path d="m108 135.4h17v-40.9z"/><g opacity=".9"><path d="m125 153.4h24.7l11.7 29.2h21.7.1l-58.2-130.5v.1-22.2l93.1 33.2-14.2 123.1-78.9 43.7z"/><path d="m142 135.4h-17v-40.9z"/></g></g></svg>
-<svg style="width: 150px; height: 150px">
-  <use xlink:href="#nineelements-logo-path" />
-</svg>
-
 # Workshop: Testing Angular Applications
 
 These are the slides of a two-day workshop on advanced testing techniques for Angular enterprise applications.
