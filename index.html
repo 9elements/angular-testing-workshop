@@ -378,7 +378,7 @@
   <h2>Unit Test ausführlich</h2>
 
   <ul>
-    <li>Wir erstellen einen <a href="https://github.com/9elements/angular-workshop/blob/master/src/app/counter/counter.component.ts">Counter</a></li>
+    <li>Wir erstellen einen <a href="https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.ts">Counter</a></li>
     <li><code>npm install -g @angular/cli</code></li>
     <li><code>ng new counter</code></li>
     <li><code>"strict": true</code> in tsconfig.json aktivieren</li>
@@ -472,7 +472,7 @@
 </section>
 
 <section>
-  <h2><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/counter/counter.component.spec.ts">Counter-Test</a></h2>
+  <h2><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.spec.ts">Counter-Test</a></h2>
 
   <ul>
     <li>✅ it('renders the initial count', …)</li>
@@ -523,7 +523,7 @@ debugElement.triggerEventHandler('click', {
 </section>
 
 <section>
-  <h2><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/counter/counter.component.spec.ts">Counter-Test</a></h2>
+  <h2><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.spec.ts">Counter-Test</a></h2>
 
   <ul>
     <li>✅ it('renders the initial count', …)</li>
@@ -766,7 +766,7 @@ expect(el.properties.startCount).toBe(5);
 <section id="service-dependency">
   <h2>Komponente mit Service-Abhängigkeit (1)</h2>
 
-  <p>Beispiel <a href="https://github.com/9elements/angular-workshop/blob/master/src/app/service-counter/service-counter.component.ts">ServiceCounterComponent</a></p>
+  <p>Beispiel <a href="https://github.com/9elements/angular-workshop/blob/master/src/app/components/service-counter/service-counter.component.ts">ServiceCounterComponent</a></p>
 
 <pre class="typescript"><code data-trim>
 class ServiceCounterComponent {
@@ -1011,7 +1011,7 @@ expect(mockCounterService.reset).toHaveBeenCalledWith(newCount);
 <section id="store-dependency">
   <h2>Komponente mit NgRx-Store-Abhängigkeit</h2>
 
-  <p><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/ngrx-counter/ngrx-counter.component.ts">NgRxCounterComponent</a></p>
+  <p><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/components/ngrx-counter/ngrx-counter.component.ts">NgRxCounterComponent</a></p>
 
 <pre class="typescript"><code data-trim>
 class NgRxCounterComponent {
