@@ -5,7 +5,7 @@
 
 These are the slides of a two-day workshop on advanced testing techniques for Angular enterprise applications.
 
-*[Read the slides online](https://9elements.github.io/angular-testing-workshop/) (German)
+[Read the slides online](https://9elements.github.io/angular-testing-workshop/) (German)
 
 ## Topics covered
 
